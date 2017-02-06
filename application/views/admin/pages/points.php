@@ -10,7 +10,7 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-          <h2>Shifts</h2>
+          <h2>Points</h2>
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
           </ul>
@@ -21,7 +21,11 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Shift Name</th>                  
+                  <th>Point Name</th> 
+                  <th>Latitude</th>
+                  <th>Longitude</th>
+                  <th>Auth Key</th>
+                  <th>Actions</th>                 
                 </tr>
               </thead>
               <tbody>
@@ -29,10 +33,13 @@
                   <?php $enc_id = encrypt($data->id,true) ?>
                   <tr>
                     <td><?php echo ++$i ?></td>
-                    <td><?php echo $data->title ?></td>                    
+                    <td><?php echo $data->point_name ?></td>                    
+                    <td><?php echo $data->point_lat ?></td>                    
+                    <td><?php echo $data->point_long ?></td>                    
+                    <td><?php echo $data->point_key ?></td> 
                     <td><center>
-                          <a href="<?php echo site_url("admin/shifts/edit/".$enc_id) ?>" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-warning"> <i class="fa fa-pencil"></i> </a>
-                          <a href="<?php echo site_url("admin/shifts/delete/".$enc_id) ?>" data-toggle="tooltip" title="Hapus" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin?\')"> <i class="fa fa-trash"></i> </a>
+                          <a href="<?php echo site_url("admin/points/edit/".$enc_id) ?>" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-warning"> <i class="fa fa-pencil"></i> </a>
+                          <a href="<?php echo site_url("admin/points/delete/".$enc_id) ?>" data-toggle="tooltip" title="Hapus" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin?\')"> <i class="fa fa-trash"></i> </a>
                         </center></td>
                   </tr>
                 <?php endforeach ?>

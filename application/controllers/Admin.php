@@ -22,113 +22,30 @@ class Admin extends Ext_Controller {
     function index(){
         $this->LoadUI("admin/pages/default");
     }
-    function about($action = null, $id = null, $save = null){                  
-        if($action == null){
-            return $this->about_home();
-        }
-        
-        $IOManager = new IOManager($this);
-        $IOManager->Table("ui_about")
-                ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/contact/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/about"))
-                ->ViewOnAdd("admin/io/about");
-                
-        if($action == "edit" || $action == "new"){
-            $data = new ModelUIAbout();
-            
-            if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
-                $data->Parse(singlerow($data->ExactQuery()));                
-            }else if($action == "edit" && $save == "save"){
-                $this->ParsePostData($data);
-            }
-            
-            $IOManager->SetMode($action)
-                    ->Data($data);
-            
-            if($save == null){
-                $IOManager->Show();
-            }else if($save == "save"){
-                $IOManager->Execute();
-            }
-            
-            return;
-        }        
-        
-        if($action == "delete"){
-            $IOManager->UseID(base64_decode($id))
-                    ->Execute();
-        }
-    }    
-    private function about_home(){
-        $q = $this->db->get("ui_about");
-        $this->SetUIData("about",$q->result());
-        $this->LoadUI("admin/pages/about");
-    }
     
-    function contact($action = null, $id = null, $save = null){                  
+    function shifts($action = null, $id = null, $save = null){   
+        $_naming = "shifts";
         if($action == null){
-            return $this->contact_home();
-        }
-        
-        $IOManager = new IOManager($this);
-        $IOManager->Table("ui_contact")
-                ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/contact/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/contact"))
-                ->ViewOnAdd("admin/io/contact");
-                
-        if($action == "edit" || $action == "new"){
-            $data = new ModelUIContact();
-            
-            if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
-                $data->Parse(singlerow($data->ExactQuery()));                
-            }else if($save == "save"){
-                $this->ParsePostData($data);
-            }
-            
-            $IOManager->SetMode($action)
-                    ->Data($data);
-            
-            if($save == null){
-                $IOManager->Show();
-            }else if($save == "save"){
-                $IOManager->Execute();
-            }
-            
-            return;
-        }        
-        
-        if($action == "delete"){
-            $IOManager->UseID(base64_decode($id))
-                    ->Execute();
-        }
-    }    
-    private function contact_home(){
-        $q = $this->db->get("ui_contact");
-        $this->SetUIData("contact",$q->result());
-        $this->LoadUI("admin/pages/contact");
-    }
-    
-    function testimoni($action = null, $id = null, $save = null){                  
-        if($action == null){
-            return $this->testimoni_home();
+            $m = $_naming."_home";
+            return $this->$m();
         }
         
         $IOManager = new IOManager($this);
         $IOManager->Table("ui_testimoni")
                 ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/testimoni/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/testimoni"))
-                ->ViewOnAdd("admin/io/testimoni");
+                ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
+                ->RedirectTo(site_url("admin/".$_naming))
+                ->ViewOnAdd("admin/io/".$_naming);
                 
         if($action == "edit" || $action == "new"){
-            $data = new ModelUITestimoni();
+            $data = new m_shift();
             
             if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
+                if($data instanceof IUseEncodedID):
+                    $data->SetID(decrypt($id, true));
+                else:
+                    $data->id = decrypt($id, true);
+                endif;
                 $data->Parse(singlerow($data->ExactQuery()));                
             }else if($save == "save"){
                 $this->ParsePostData($data);
@@ -152,29 +69,35 @@ class Admin extends Ext_Controller {
                     ->Execute();
         }
     }    
-    private function testimoni_home(){
-        $q = $this->db->get("ui_testimoni");
-        $this->SetUIData("testimoni",$q->result());
-        $this->LoadUI("admin/pages/testimoni");
+    private function shifts_home(){
+        $q = $this->db->get("m_shift");
+        $this->SetUIData("rows",$q->result());
+        $this->LoadUI("admin/pages/shifts");
     }
     
-    function slider($action = null, $id = null, $save = null){                  
+    function points($action = null, $id = null, $save = null){   
+        $_naming = "points";
         if($action == null){
-            return $this->slider_home();
+            $m = $_naming."_home";
+            return $this->$m();
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_slider")
+        $IOManager->Table("ui_testimoni")
                 ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/slider/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/slider"))
-                ->ViewOnAdd("admin/io/slider");
+                ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
+                ->RedirectTo(site_url("admin/".$_naming))
+                ->ViewOnAdd("admin/io/".$_naming);
                 
         if($action == "edit" || $action == "new"){
-            $data = new ModelUISlider();
+            $data = new m_point();
             
             if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
+                if($data instanceof IUseEncodedID):
+                    $data->SetID(decrypt($id, true));
+                else:
+                    $data->id = decrypt($id, true);
+                endif;
                 $data->Parse(singlerow($data->ExactQuery()));                
             }else if($save == "save"){
                 $this->ParsePostData($data);
@@ -198,29 +121,39 @@ class Admin extends Ext_Controller {
                     ->Execute();
         }
     }    
-    private function slider_home(){
-        $q = $this->db->get("ui_slider");
-        $this->SetUIData("slider",$q->result());
-        $this->LoadUI("admin/pages/slider");
+    private function points_home(){
+        $q = $this->db->get("m_point");
+        $this->SetUIData("rows",$q->result());
+        $this->LoadUI("admin/pages/points");
     }
     
-    function post($action = null, $id = null, $save = null){                  
+    //
+    function schedules($action = null, $id = null, $save = null){   
+        $_naming = "schedules";
         if($action == null){
-            return $this->post_home();
+            $m = $_naming."_home";
+            return $this->$m();
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_blog")
+        $IOManager->Table("ui_testimoni")
                 ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/post/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/post"))
-                ->ViewOnAdd("admin/io/post");
-                
+                ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
+                ->RedirectTo(site_url("admin/".$_naming))
+                ->ViewOnAdd("admin/io/".$_naming);
+        
+        $IOManager->AddReference("shifts", $this->db->get("m_shift")->result());
+        $IOManager->AddReference("points", $this->db->get("m_point")->result());
+        
         if($action == "edit" || $action == "new"){
-            $data = new ModelUIBlog();
+            $data = new m_schedule();
             
             if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
+                if($data instanceof IUseEncodedID):
+                    $data->SetID(decrypt($id, true));
+                else:
+                    $data->id = decrypt($id, true);
+                endif;
                 $data->Parse(singlerow($data->ExactQuery()));                
             }else if($save == "save"){
                 $this->ParsePostData($data);
@@ -244,29 +177,38 @@ class Admin extends Ext_Controller {
                     ->Execute();
         }
     }    
-    private function post_home(){
-        $q = $this->db->get("ui_blog");
-        $this->SetUIData("post",$q->result());
-        $this->LoadUI("admin/pages/post");
+    private function schedules_home(){
+        $q = $this->db->get("m_schedule");
+        $this->SetUIData("rows",$q->result());
+        $this->LoadUI("admin/pages/schedules");
     }
     
-    function team($action = null, $id = null, $save = null){                  
+    //
+    function users($action = null, $id = null, $save = null){   
+        $_naming = "users";
         if($action == null){
-            return $this->team_home();
+            $m = $_naming."_home";
+            return $this->$m();
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_team")
+        $IOManager->Table("ui_testimoni")
                 ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/team/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/team"))
-                ->ViewOnAdd("admin/io/team");
-                
+                ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
+                ->RedirectTo(site_url("admin/".$_naming))
+                ->ViewOnAdd("admin/io/".$_naming);
+        
+        $IOManager->AddReference("shifts", $this->db->get("m_shift")->result());
+        
         if($action == "edit" || $action == "new"){
-            $data = new ModelUITeam();
+            $data = new m_user();
             
             if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
+                if($data instanceof IUseEncodedID):
+                    $data->SetID(decrypt($id, true));
+                else:
+                    $data->id = decrypt($id, true);
+                endif;
                 $data->Parse(singlerow($data->ExactQuery()));                
             }else if($save == "save"){
                 $this->ParsePostData($data);
@@ -290,55 +232,10 @@ class Admin extends Ext_Controller {
                     ->Execute();
         }
     }    
-    private function team_home(){
-        $q = $this->db->get("ui_team");
-        $this->SetUIData("team",$q->result());
-        $this->LoadUI("admin/pages/team");
+    private function users_home(){
+        $q = $this->db->get("m_user");
+        $this->SetUIData("rows",$q->result());
+        $this->LoadUI("admin/pages/users");
     }
     
-    function services($action = null, $id = null, $save = null){                  
-        if($action == null){
-            return $this->services_home();
-        }
-        
-        $IOManager = new IOManager($this);
-        $IOManager->Table("ui_services")
-                ->IdFieldOnTable("id")
-                ->PostTo(site_url("admin/services/".$action."/".($action == "new"?1:$id)."/save"))
-                ->RedirectTo(site_url("admin/services"))
-                ->ViewOnAdd("admin/io/services");
-                
-        if($action == "edit" || $action == "new"){
-            $data = new ModelUIServices();
-            
-            if($action == "edit" && $save == null){
-                $data->SetID(decrypt($id, true));
-                $data->Parse(singlerow($data->ExactQuery()));                
-            }else if($save == "save"){
-                $this->ParsePostData($data);
-            }
-            
-            $IOManager->SetMode($action)
-                    ->Data($data);
-            
-            if($save == null){
-                $IOManager->Show();
-            }else if($save == "save"){
-                $IOManager->Execute();
-            }
-            
-            return;
-        }        
-        
-        if($action == "delete"){
-            $IOManager->SetMode($action);
-            $IOManager->UseID(decrypt($id,true))
-                    ->Execute();
-        }
-    }    
-    private function services_home(){
-        $q = $this->db->get("ui_services");
-        $this->SetUIData("services",$q->result());
-        $this->LoadUI("admin/pages/services");
-    }
 }

@@ -196,6 +196,9 @@ class IOManager{
         $this->footer = $footer;
         return $this;
     }
+    function AddReference($name,array $values){
+        $this->ci->SetUIData($name, $values);
+    }
     /**
      * 
      * @param string $mode : "edit"/"delete"/"new"

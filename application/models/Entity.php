@@ -44,6 +44,19 @@ abstract class EntityModel{
         
         return $savefilepath.$ci->upload->data("file_name");
     }
+    public static function LoadReference(&$obj, $ref_field, $targettable, $target_field, $key = "id"){
+        $id = $obj->$ref_field;
+        
+        $ci =& get_instance();
+        
+        $ci->db->from($targettable)
+                ->where($key, $id)
+                ->select($target_field);
+        $q = $ci->db->get();
+        
+        $data = singlerow($q);
+        $obj->$ref_field = $data->$target_field;
+    }
     protected $_attrib = array();
     protected function SetModelCRUD(){
         $this->_attrib['model_crud'] = true;
@@ -56,7 +69,7 @@ abstract class EntityModel{
     }
     public function GetIDField(){
         return $this->_attrib['key'];
-    }
+    }    
     public static function GetData($obj,$wherequery = null, $orderby = null, $limit = null){
         $data = array();        
         
