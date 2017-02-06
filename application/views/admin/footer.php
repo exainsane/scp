@@ -1,6 +1,6 @@
 <footer>
           <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            Copyright &copy; 2017 Marva Cipta Indonesia
           </div>
           <div class="clearfix"></div>
         </footer>
