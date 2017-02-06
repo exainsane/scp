@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Admin | UNJ Mengajar</title>
+    <title>Admin | Marva Security Checkpoint</title>
 
     <script type="text/javascript" src="<?php echo base_url("assets/ckeditor/ckeditor.js") ?>"></script>
 
@@ -46,7 +46,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-pencil"></i> <span>UNJ Mengajar</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-pencil"></i> <span>Marva Security Checkpoint</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -71,7 +71,7 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class="fa fa-home"></i> Home </a></li>
-                  <li><a><i class="fa fa-edit"></i> Tambah Data <span class="fa fa-chevron-down"></span></a>
+                  <!-- <li><a><i class="fa fa-edit"></i> Tambah Data <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?php echo site_url("admin/post/new") ?>">Post Blog</a></li>
                       <li><a href="<?php echo site_url("admin/services/new") ?>">Service</a></li>
@@ -79,16 +79,13 @@
                       <li><a href="<?php echo site_url("admin/team/new") ?>">Team</a></li>
                       <li><a href="<?php echo site_url("admin/testimoni/new") ?>">Testimoni</a></li>
                     </ul>
-                  </li>                  
+                  </li>    -->               
                   <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?php echo site_url("admin/about") ?>">About</a></li>
-                      <li><a href="<?php echo site_url("admin/contact") ?>">Contact</a></li>
-                      <li><a href="<?php echo site_url("admin/post") ?>">Post Blog</a></li>
-                      <li><a href="<?php echo site_url("admin/services") ?>">Service</a></li>
-                      <li><a href="<?php echo site_url("admin/slider") ?>">Slider</a></li>
-                      <li><a href="<?php echo site_url("admin/team") ?>">Team</a></li>
-                      <li><a href="<?php echo site_url("admin/testimoni") ?>">Testimoni</a></li>
+                      <li><a href="<?php echo site_url("admin/shifts") ?>">Shifts</a></li>
+                      <li><a href="<?php echo site_url("admin/points") ?>">Points</a></li>
+                      <li><a href="<?php echo site_url("admin/schedules") ?>">Schedules</a></li>
+                      <li><a href="<?php echo site_url("admin/users") ?>">Users</a></li>
                     </ul>
                   </li>
                 </ul>

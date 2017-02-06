@@ -1,4 +1,7 @@
 <?php
+function site_title(){
+    return "Marva Security Checkpoint";
+}
 /**
 	 * These are the regular expression rules that we use to validate the product ID and product name
 	 * alpha-numeric, dashes, underscores, or periods
