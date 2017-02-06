@@ -409,8 +409,10 @@ class m_user extends EntityModel implements IUsePasswordField{
 
     function __construct(){
       parent::__construct("m_user");
-   }   public $id;
+   }   
+   public $id;
    public $_enable;
+   public $user_activated;
    public $username;
    public $password;
    public $firstname;

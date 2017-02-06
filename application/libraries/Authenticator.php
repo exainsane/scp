@@ -1,5 +1,5 @@
 <?php
-define("USERDB_CLASSNAME","model_user");
+define("USERDB_CLASSNAME","m_user");
 
 /*
  * Created by Exairie
