@@ -271,7 +271,10 @@ class Api extends Api_Controller {
     function getschedule(){
         $schedule = new m_schedule();
         
-        return $schedule->ExactQuery()->result();  
+        $this->ParseGetData($schedule);
+       
+        return $schedule->ExactQuery()->result();    
+        
     }
     
     function getevent(){
