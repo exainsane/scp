@@ -31,7 +31,7 @@ class Admin extends Ext_Controller {
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_testimoni")
+        $IOManager->Table("m_shift")
                 ->IdFieldOnTable("id")
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))
@@ -83,7 +83,7 @@ class Admin extends Ext_Controller {
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_testimoni")
+        $IOManager->Table("m_point")
                 ->IdFieldOnTable("id")
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))
@@ -136,7 +136,7 @@ class Admin extends Ext_Controller {
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_testimoni")
+        $IOManager->Table("m_schedule")
                 ->IdFieldOnTable("id")
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))
@@ -192,7 +192,7 @@ class Admin extends Ext_Controller {
         }
         
         $IOManager = new IOManager($this);
-        $IOManager->Table("ui_testimoni")
+        $IOManager->Table("m_user")
                 ->IdFieldOnTable("id")
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))

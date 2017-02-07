@@ -313,6 +313,9 @@ abstract class EntityModel{
         $this->_attrib['key'] = $keyid;
         $this->_attrib['model_crud'] = false;
     }
+    function GetTableName(){
+        return $this->_attrib['table'];
+    }
 }
 
 
