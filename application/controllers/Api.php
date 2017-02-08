@@ -66,7 +66,7 @@ class Api extends Api_Controller {
                 ->IdFieldOnTable("id")
                 ->Data($user);
         
-        if($IOManager->Execute()){
+        if($IOManager->Execute() == true){
             return $this->Success();
         }
     }
@@ -113,7 +113,7 @@ class Api extends Api_Controller {
          * Execute the data. If you're using "new" mode then it will be
          * INSERTED to database.
          */
-        if($IOManager->Execute()){
+        if($IOManager->Execute() == true){
             /*
              * Return Success if true (successfully executed)
              */
@@ -173,7 +173,7 @@ class Api extends Api_Controller {
          * Execute the data. If you're using "edit" mode then it will be
          * UPDATED to database.
          */
-        if($IOManager->Execute()){
+        if($IOManager->Execute() == true){
             return $this->Success();
         }
         else{
@@ -230,7 +230,7 @@ class Api extends Api_Controller {
             $IOManager->UseID($shift->id);
         }
             
-        if ($IOManager->Execute()) {
+        if ($IOManager->Execute() == true) {
             return $this->Success();
         }else
         {
@@ -241,17 +241,19 @@ class Api extends Api_Controller {
      * schedule
      */
     function postschedule(){
-        $user = new m_schedule();
+        $schedule = new m_schedule();
         
-        $this->ParsePostData($user);
+        $this->ParsePostData($schedule);
         
         $IOManager = new IOManager($this);
         $IOManager->SetMode("new")
                 ->IdFieldOnTable("id")
-                ->Data($user);
+                ->Data($schedule);
         
-        if($IOManager->Execute()){
+        if($IOManager->Execute() == true){
             return $this->Success();
+        }else{
+            return $this->Fail();
         }
     }
     function postpoint(){
@@ -264,15 +266,28 @@ class Api extends Api_Controller {
                 ->IdFieldOnTable("id")
                 ->Data($user);
         
-        if($IOManager->Execute()){
+        if($IOManager->Execute() == true){
             return $this->Success();
+        }else{
+            return $this->Fail();
         }
     }
     function getschedule(){
         $schedule = new m_schedule();
+        $schreq = new ScheduleRequestModel();
+        $this->ParseGetData($schreq);
         
-        $this->ParseGetData($schedule);
-       
+        $user = new m_user();
+        
+        $user->id = $schreq->identifier;
+        
+        $user->Parse(singlerow($user->ExactQuery()));
+        
+        if($user->shift == null){
+            return null;
+        }
+        
+        $schedule->shift_id = $user->shift;
         return $schedule->ExactQuery()->result();    
         
     }
@@ -282,4 +297,11 @@ class Api extends Api_Controller {
         
         return $report->ExactQuery()->result();
     }
+}
+class ScheduleRequestModel extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+
+    public $identifier;
 }
