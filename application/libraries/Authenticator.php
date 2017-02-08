@@ -18,7 +18,8 @@ define("USERDB_CLASSNAME","m_user");
 class Authenticator {  
     public static $ERRORCODE_UNAUTHORIZED = 0;
     public static $ERRORCODE_LOWER_ACCESS_LEVEL = 1;
-    public $last_error = "";    
+    public $last_error = "";   
+    public $token = "";
     private static $instance = null;
     
     /**
@@ -38,10 +39,10 @@ class Authenticator {
     }
     
     public function Login($username, $password){
-        $m = new model_user();
+        $m = new m_user();
         
         $m instanceof IUsePasswordField;
-
+        
 
         $m->username = $username;
         $m->SetPassword($password);
@@ -49,29 +50,39 @@ class Authenticator {
         $q = $m->ExactQuery();
         
         if($q->num_rows() != 1){
+            $this->last_error = "User Not Found";
             return false;
         }
-        
+        $m instanceof m_user;
         $data = $q->result();
         $user = end($data);
-        $m->Parse($user);
+        $m->Parse($user);        
+                
+//        if($m->user_activated == 0){
+//            $this->last_error = "User not activated";
+//            return false;
+//        }
+
+
+        $this->SaveCredentialInfo($m);
+        $this->token = $this->GenerateToken(45);
         
-        $m instanceof model_user;
-        if($m->user_activated == 0){
-            $this->last_error = "User not activated";
-            return false;
-        }
-
-
-        $this->SaveCredentialInfo();
+        $token = new m_token();                
+        
+        $token->id_user = $m->id;
+        $token->ScanDelete();
+        
+        $token->token = $this->token;
+        $token->Insert();
         
         return true;
     }
     /**
      * 
-     * @return type model_user
+     * @return type m_user
      */
-    public function CurrentUser(){        
+    public function CurrentUser(){   
+        $ci =& get_instance();
         if(!$this->IsLoggedIn()){
             return null;
         }
@@ -82,12 +93,12 @@ class Authenticator {
     /**
      * 
      * @param int $id
-     * @return model_user
+     * @return m_user
      */
     public function UserData($id){        
         $ci =& get_instance();
         
-        $m = new model_user();
+        $m = new m_user();
         
         $m->id = $id;
         
@@ -106,7 +117,7 @@ class Authenticator {
 
         return $m;
     }
-    public function Register(model_user $ndt){
+    public function Register(m_user $ndt){
         if(strlen($ndt->username) < 1){
             $this->last_error = "Username empty";
             return false;
@@ -123,7 +134,7 @@ class Authenticator {
         $ndt->user_activated = 0;
         
         //Check if username exist
-        $m = new model_user();
+        $m = new m_user();
         $m->username = $ndt->username;
         
         if($m->ExactQuery()->num_rows() > 0){
@@ -177,11 +188,12 @@ class Authenticator {
     public function VerifyLevel($level){
         
     }
-    private function SaveCredentialInfo(model_user $obj){
+    private function SaveCredentialInfo($obj){
         $ci =& get_instance();
         
         $ci->session->set_userdata(SESSIONKEY."loggeduserid", $obj->id);
         
+        $obj->password = null;
         $obj->last_active = "CURRENT_TIMESTAMP";
         
         $obj->Update();

@@ -124,6 +124,23 @@ abstract class EntityModel{
         
         return $data;
     }
+    public function ScanDelete(){
+        $ci =& get_instance();
+        
+        $attrs = get_object_vars($this);
+        
+        unset($attrs["_attrib"]);
+        
+        if(count($attrs) < 1) return false;
+        
+        foreach ($attrs as $key => $value){
+            if($value == null) continue;
+            $ci->db->where($key, $value);
+        }
+        $ci->db->from($this->GetTableName());
+        
+        return $ci->db->delete($this->GetTableName());
+    }
     public function Delete(){
         $ci =& get_instance();
         
@@ -460,4 +477,25 @@ class t_event_report extends EntityModel{
    public $point_lat;
    public $point_long;
    public $img;
+}
+class m_token extends EntityModel{ 
+   function __construct(){
+      parent::__construct("m_token");
+   }   
+   public $id;
+   public $id_user;
+   public $token;
+}
+
+/*
+ * Helper Models
+ */
+
+class LoginForm extends EntityModel{    
+    function __construct(){
+      parent::__construct("");
+   }  
+   public $username;
+   public $password;
+   
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2017 at 04:44 AM
+-- Generation Time: Feb 08, 2017 at 05:36 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
 --
 
 INSERT INTO `m_schedule` (`id`, `_enable`, `shift_id`, `point_id`, `schedule`) VALUES
-(1, 1, 1, 1, '09:00:00'),
+(1, 1, 2, 1, '09:00:00'),
 (2, 1, 1, 2, '12:00:00'),
 (3, 1, 1, 3, '15:00:00'),
 (4, 1, 1, 4, '18:00:00');
@@ -164,9 +164,31 @@ CREATE TABLE IF NOT EXISTS `m_shift` (
 --
 
 INSERT INTO `m_shift` (`id`, `_enable`, `title`, `company_id`) VALUES
-(1, 1, 'Shift 1', 0),
+(1, 1, 'Shift 1 : Siang', 0),
 (2, 1, 'Shift 2', 0),
 (3, 1, 'Shift 3', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `m_token`
+--
+
+CREATE TABLE IF NOT EXISTS `m_token` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `id_user` bigint(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_user_2` (`id_user`),
+  KEY `id_user` (`id_user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+
+--
+-- Dumping data for table `m_token`
+--
+
+INSERT INTO `m_token` (`id`, `id_user`, `token`) VALUES
+(22, 7, 'RXVacEsxCcrWfPImDfDeVG4wGQjJ1XfOvKcfgr1XQI2uo');
 
 -- --------------------------------------------------------
 
@@ -177,6 +199,7 @@ INSERT INTO `m_shift` (`id`, `_enable`, `title`, `company_id`) VALUES
 CREATE TABLE IF NOT EXISTS `m_user` (
   `id` bigint(255) NOT NULL AUTO_INCREMENT,
   `_enable` tinyint(1) NOT NULL DEFAULT '1',
+  `user_activated` tinyint(1) NOT NULL DEFAULT '1',
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
@@ -188,17 +211,19 @@ CREATE TABLE IF NOT EXISTS `m_user` (
   `user_level` smallint(2) NOT NULL,
   `device_key` varchar(255) NOT NULL,
   `company_id` bigint(255) NOT NULL,
+  `last_active` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `shift` (`shift`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `m_user`
 --
 
-INSERT INTO `m_user` (`id`, `_enable`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`) VALUES
-(4, 1, 'exainsane2', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan Nugroho', '', 'Bogor', '', '', 1, 0, '', 0);
+INSERT INTO `m_user` (`id`, `_enable`, `user_activated`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`, `last_active`) VALUES
+(4, 1, 1, 'exainsane2', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan Nugroho', '', 'Bogor', '', '', 1, 0, '', 0, '0000-00-00 00:00:00'),
+(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -276,6 +301,12 @@ ALTER TABLE `m_point_key`
 ALTER TABLE `m_schedule`
   ADD CONSTRAINT `m_schedule_ibfk_1` FOREIGN KEY (`shift_id`) REFERENCES `m_shift` (`id`),
   ADD CONSTRAINT `m_schedule_ibfk_2` FOREIGN KEY (`point_id`) REFERENCES `m_point` (`id`);
+
+--
+-- Constraints for table `m_token`
+--
+ALTER TABLE `m_token`
+  ADD CONSTRAINT `m_token_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `m_user` (`id`);
 
 --
 -- Constraints for table `m_user`

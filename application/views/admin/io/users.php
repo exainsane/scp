@@ -72,7 +72,7 @@
             <div class="form-group">
               <label class="control-label col-md-3 col-sm-3 col-xs-12">Shift</label>
               <div class="col-md-9 col-sm-9 col-xs-12">
-                <select name="form-shift_id" id="">
+                <select name="form-shift" id="">
                   <option value="" disabled>Select Shift</option>
                   <?php foreach ($shifts as $shift): ?>
                     <option value="<?php echo $shift->id ?>"  <?php echo $shift == $shift->id?"selected":"" ?> ><?php echo $shift->title ?></option>  
