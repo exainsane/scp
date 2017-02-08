@@ -37,7 +37,40 @@ class Authenticator {
         $this->ci =& get_instance();
         
     }
-    
+    /*
+     * Use this for token
+     * 
+     */
+    public function VerifyToken($token){
+        $token = new m_token();
+        
+        $token->token = $token;
+        
+        $data = $token->ExactQuery();
+        
+        if($data->num_rows() != 1){
+            $this->last_error = "Token invalid";
+            return false;
+        }
+        else{
+            $token->Parse(singlerow($data->result()));
+            $user = new m_user();
+            $user->id = $token->id_user;
+            
+            $data = $user->ExactQuery();
+            
+            
+            if($data->num_rows() != 1){
+                $this->last_error = "User Data Invalid";
+                return false;
+            }
+            
+            $user->Parse(singlerow($data->result()));
+            
+            $this->SaveCredentialInfo($user);
+            return true;
+        }
+    }
     public function Login($username, $password){
         $m = new m_user();
         
