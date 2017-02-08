@@ -28,6 +28,7 @@ class Auth extends Api_Controller {
         
         $this->ParsePostData($data);
         
+        
         $auth = Authenticator::GetContext();
         $auth instanceof Authenticator;
         if ($auth->Login($data->username, $data->password)){

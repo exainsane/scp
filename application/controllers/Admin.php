@@ -70,8 +70,8 @@ class Admin extends Ext_Controller {
         }
     }    
     private function shifts_home(){
-        $q = $this->db->get("m_shift");
-        $this->SetUIData("rows",$q->result());
+        $shift = new m_shift();
+        $this->SetUIData("rows",$shift->ExactQuery()->result());
         $this->LoadUI("admin/pages/shifts");
     }
     
@@ -142,8 +142,10 @@ class Admin extends Ext_Controller {
                 ->RedirectTo(site_url("admin/".$_naming))
                 ->ViewOnAdd("admin/io/".$_naming);
         
-        $IOManager->AddReference("shifts", $this->db->get("m_shift")->result());
-        $IOManager->AddReference("points", $this->db->get("m_point")->result());
+        $shift = new m_shift();
+        $IOManager->AddReference("shifts", $shift->ExactQuery()->result());
+        $point = new m_point();
+        $IOManager->AddReference("points", $point->ExactQuery()->result());
         
         if($action == "edit" || $action == "new"){
             $data = new m_schedule();
@@ -197,8 +199,9 @@ class Admin extends Ext_Controller {
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))
                 ->ViewOnAdd("admin/io/".$_naming);
+        $shift = new m_shift();
         
-        $IOManager->AddReference("shifts", $this->db->get("m_shift")->result());
+        $IOManager->AddReference("shifts", $shift->ExactQuery()->result());
         
         if($action == "edit" || $action == "new"){
             $data = new m_user();
