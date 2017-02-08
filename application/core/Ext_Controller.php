@@ -92,11 +92,17 @@ class Api_Controller extends Ext_Controller{
     public function __construct() {
         parent::__construct();
     }    
-    protected function Success($msg = "Action Completed Successfully"){
+    protected function Success($msg = "Action Completed Successfully", $data = null){
         $st = array();
         $st['status'] = 'ok';
         $st['code'] = 200;
         $st['msg'] = $msg;
+        
+        if($data != null){
+            foreach($data as $key => $value){
+                $st[$key] = $value;
+            }
+        }
         
         return $st;
     }
@@ -480,6 +486,31 @@ abstract class EntityModel{
         $ci->db->from($table);
         return $ci->db->insert();
                 
+    }
+    public function RangedQuery(){
+        $ci =& get_instance();
+        
+        $attrs = get_object_vars($this);
+                
+        unset($attrs['_attrib']);
+        
+        $ci->db->select("*")
+                ->from($this->_attrib['table']);
+        
+        if($this instanceof IUseEncodedID){
+            $idfield = $this->GetIDField();
+            
+            $attrs[$idfield] = $this->GetID();
+                        
+        }
+        
+        foreach ($attrs as $key => $value) {            
+            if($value == null) continue;
+            if(!is_array($value)) continue;
+            
+            $ci->db->where_in($key, $value);
+        }                
+        return $ci->db->get();
     }
     public function ExactQuery(){
         $ci =& get_instance();

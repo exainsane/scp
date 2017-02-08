@@ -87,3 +87,23 @@ function get_filename_extension($filename){
     
     return end($n);
 }
+/*
+ * Use this to transform EntityModel to StdClass
+ * 
+ */
+function TransformIntoStdClass($obj){
+    $attrs = get_object_vars($obj);
+    if($obj instanceof EntityModel){
+        /*
+         * remove attribute from EntityModel
+         */
+        unset($attrs['_attrib']);
+    }
+    
+    $cls = new stdClass();
+    
+    foreach ($attrs as $key=>$value){
+        $cls->$key = $value;
+    }
+    return $cls;
+}

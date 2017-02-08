@@ -284,12 +284,35 @@ class Api extends Api_Controller {
         $user->Parse(singlerow($user->ExactQuery()));
         
         if($user->shift == null){
-            return null;
+            return $this->Fail("Unregistered in any shifts");
         }
         
         $schedule->shift_id = $user->shift;
-        return $schedule->ExactQuery()->result();    
         
+        $schedules = $schedule->ExactQuery()->result();
+        
+        if(count($schedules) < 1)
+        {
+            return $this->Fail("Schedule Not Found");
+        }            
+        
+        $pointids = array();
+        
+        foreach($schedules as $row){
+            array_push($pointids, $row->point_id);
+        }
+        
+        $points = new m_point();        
+        $points->id = $pointids;
+        
+        $presult = $points->RangedQuery()->result();
+        
+        if(count($presult) < 1)
+        {
+            return $this->Fail("Points Undefined");
+        }  
+        
+        return $this->Success("success", array("schedules"=>$schedules, "points" => $presult));
     }
     
     function getevent(){
