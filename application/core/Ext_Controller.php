@@ -65,8 +65,8 @@ class Ext_Controller extends CI_Controller{
         $postarr = $this->input->get(null);
         $data = array();
         foreach ($postarr as $key => $value){
-            if(is_numeric(strpos($key, "urd-"))){
-                $tkey = str_replace("urd-", "", $key);
+            if(is_numeric(strpos($key, "urd_"))){
+                $tkey = str_replace("urd_", "", $key);
                 $data[$tkey] = $value;
             }
         }
