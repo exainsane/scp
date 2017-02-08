@@ -238,4 +238,13 @@ class Admin extends Ext_Controller {
         $this->LoadUI("admin/pages/users");
     }
     
+     function history(){
+        
+        $this->LoadUI("admin/pages/trans_history.php");
+    }
+    function report(){
+        
+        $this->LoadUI("admin/pages/event_report.php");
+    }
+    
 }
