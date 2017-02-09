@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2017 at 05:36 AM
+-- Generation Time: Feb 09, 2017 at 04:20 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `m_point` (
   `point_lat` decimal(18,4) NOT NULL,
   `point_long` decimal(18,4) NOT NULL,
   `point_key` varchar(255) DEFAULT NULL,
+  `point_code` varchar(255) NOT NULL,
   `company_id` bigint(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`)
@@ -93,11 +94,11 @@ CREATE TABLE IF NOT EXISTS `m_point` (
 -- Dumping data for table `m_point`
 --
 
-INSERT INTO `m_point` (`id`, `_enable`, `point_name`, `point_lat`, `point_long`, `point_key`, `company_id`) VALUES
-(1, 1, 'Pos A1', '0.0000', '0.0000', '-', 0),
-(2, 1, 'Pos B1', '0.0000', '0.0000', '-', 0),
-(3, 1, 'Pos C1', '0.0000', '0.0000', '-', 0),
-(4, 1, 'Pos D1', '0.0000', '0.0000', '-', 0);
+INSERT INTO `m_point` (`id`, `_enable`, `point_name`, `point_lat`, `point_long`, `point_key`, `point_code`, `company_id`) VALUES
+(1, 1, 'Pos A1', '0.0000', '0.0000', '-', '', 0),
+(2, 1, 'Pos B1', '0.0000', '0.0000', '-', '', 0),
+(3, 1, 'Pos C1', '0.0000', '0.0000', '-', '', 0),
+(4, 1, 'Pos D1', '0.0000', '0.0000', '-', '', 0);
 
 -- --------------------------------------------------------
 
@@ -132,17 +133,21 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
   PRIMARY KEY (`id`),
   KEY `shift_id` (`shift_id`),
   KEY `point_id` (`point_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `m_schedule`
 --
 
 INSERT INTO `m_schedule` (`id`, `_enable`, `shift_id`, `point_id`, `schedule`) VALUES
-(1, 1, 2, 1, '09:00:00'),
-(2, 1, 1, 2, '12:00:00'),
-(3, 1, 1, 3, '15:00:00'),
-(4, 1, 1, 4, '18:00:00');
+(7, 1, 1, 1, '12:00:00'),
+(8, 1, 1, 2, '13:00:00'),
+(9, 1, 1, 3, '15:00:00'),
+(10, 1, 1, 4, '17:00:00'),
+(11, 1, 2, 1, '18:00:00'),
+(12, 1, 2, 2, '19:30:00'),
+(13, 1, 2, 3, '21:30:00'),
+(14, 1, 2, 4, '01:00:00');
 
 -- --------------------------------------------------------
 
@@ -157,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `m_shift` (
   `company_id` bigint(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `m_shift`
@@ -165,8 +170,14 @@ CREATE TABLE IF NOT EXISTS `m_shift` (
 
 INSERT INTO `m_shift` (`id`, `_enable`, `title`, `company_id`) VALUES
 (1, 1, 'Shift 1 : Siang', 0),
-(2, 1, 'Shift 2', 0),
-(3, 1, 'Shift 3', 0);
+(2, 1, 'Shift 2 : Malam', 0),
+(3, 1, 'Shift 3 : Pagi', 0),
+(4, 0, 'Shift 3', 0),
+(5, 0, 'Shift 3', 0),
+(6, 0, 'Shift 3', 0),
+(7, 0, 'Shift 3', 0),
+(8, 0, 'Shift 3', 0),
+(9, 0, 'Shift 3', 0);
 
 -- --------------------------------------------------------
 
@@ -181,14 +192,16 @@ CREATE TABLE IF NOT EXISTS `m_token` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_user_2` (`id_user`),
   KEY `id_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
 
 --
 -- Dumping data for table `m_token`
 --
 
 INSERT INTO `m_token` (`id`, `id_user`, `token`) VALUES
-(22, 7, 'RXVacEsxCcrWfPImDfDeVG4wGQjJ1XfOvKcfgr1XQI2uo');
+(95, 4, 'sLJNsV12FSf5VA1FBvp1vB2RYmXpTJOmAdFXSJ8U9Nhrd'),
+(99, 8, 'EB1WJR6BdmN2V1JVelYwWh9yrjjdyp5eD2xPv9iIweq7x'),
+(100, 7, 'O4ffwmMdq3ZlQyXRDShu8u2rblOr7UKHNbpWzARog8KLe');
 
 -- --------------------------------------------------------
 
@@ -215,15 +228,16 @@ CREATE TABLE IF NOT EXISTS `m_user` (
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `shift` (`shift`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `m_user`
 --
 
 INSERT INTO `m_user` (`id`, `_enable`, `user_activated`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`, `last_active`) VALUES
-(4, 1, 1, 'exainsane2', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan Nugroho', '', 'Bogor', '', '', 1, 0, '', 0, '0000-00-00 00:00:00'),
-(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00');
+(4, 1, 1, 'exainsane22', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07', '+6287870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00'),
+(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00'),
+(8, 1, 1, 'exairie', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07 No 56 Babakan Tarikolot, Cibinong', '087870980562', 'user@exainsane.com', 2, 0, '-', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

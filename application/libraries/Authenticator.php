@@ -76,7 +76,7 @@ class Authenticator {
         
         $m instanceof IUsePasswordField;
         
-
+        
         $m->username = $username;
         $m->SetPassword($password);
         

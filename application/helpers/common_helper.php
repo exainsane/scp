@@ -107,3 +107,14 @@ function TransformIntoStdClass($obj){
     }
     return $cls;
 }
+function app_error($msg, $terminate = false){
+    $ci =& get_instance();
+    if($terminate == true):
+        if($ci instanceof Api_Controller){
+            exit(json_encode($ci->Fail($msg)));
+        }
+        else{
+            show_error($msg);
+        }
+    endif;
+}

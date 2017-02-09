@@ -51,8 +51,8 @@ class Ext_Controller extends CI_Controller{
             $postarr[$filefield] = $obj->SaveFileUpload();
         }
         
-        foreach ($postarr as $key=>$value){
-            if(is_numeric(strpos($key, "form-"))){
+        foreach ($postarr as $key=>$value){            
+            if(is_numeric(strpos($key, "form-")) && strlen($value) > 0){
                 $tkey = str_replace("form-", "", $key);
                 $data[$tkey] = $value;
             }
@@ -300,7 +300,7 @@ class IOManager{
         return $this;
     }
 }
-abstract class EntityModel{
+abstract class EntityModel{    
     public static function ManageUploadFile($formlabel){
         $ci =& get_instance();
         $ci->load->library("upload");                
@@ -354,7 +354,7 @@ abstract class EntityModel{
         $this->_attrib['model_crud'] = false;
     }
     protected function IsModelCRUD(){
-        return !isset($this->_attrib['model_crud']) || $this->_attrib['model_crud'] = true;
+        return !isset($this->_attrib['model_crud']) && $this->_attrib['model_crud'] = true;
     }
     public function GetIDField(){
         return $this->_attrib['key'];
@@ -528,13 +528,17 @@ abstract class EntityModel{
             $attrs[$idfield] = $this->GetID();
                         
         }
-        
-        foreach ($attrs as $key => $value) {            
+        if($this->IsModelCRUD() == false){
+            $ci->db->where("_enable",1);
+        }
+        foreach ($attrs as $key => $value) {              
             if($value == null) continue;
             
             $ci->db->where($key, $value);
-        }                
-        return $ci->db->get();
+        }        
+        $s = $ci->db->get_compiled_select();
+        
+        return $ci->db->query($s);
                
     }
     public function Search(){
@@ -562,16 +566,17 @@ abstract class EntityModel{
         return $ci->db->get();
                
     }
-    public function Parse($obj){       
+    public function Parse($obj){  
+        
         $attrs = get_object_vars($this);
         
         unset($attrs['_attrib']);
         
-        if($this instanceof IUseEncodedID){           
+        if($this instanceof IUseEncodedID){            
             $idfield = $this->GetIDField();
-            if(isset($obj->$idfield)){
+            if(isset($obj->$idfield) && isset($obj->$idfield) != null){
                 $this->SetID($obj->$idfield);
-            }else if(isset($obj[$idfield])){
+            }else if(isset($obj[$idfield]) && isset($obj[$idfield]) != null){
                 $this->SetID($obj[$idfield]);
             }
             //We no longer use ID Field here, since its encoded
@@ -589,8 +594,7 @@ abstract class EntityModel{
             unset($attrs[$pwfield]);
         }
         
-        foreach ($attrs as $key => $value){                        
-            
+        foreach ($attrs as $key => $value){                                    
             if(is_array($obj)){
                 if(isset($obj[$key])){
                     $this->$key = $obj[$key];

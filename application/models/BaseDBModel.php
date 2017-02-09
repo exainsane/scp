@@ -57,7 +57,7 @@ class BaseDBModel extends CI_Model {
             $crud = 1;
         }
         if($crud == 0){
-            $this->db->set("_enabled",0);
+            $this->db->set("_enable",0);
             $this->db->where($idfield,$id);
             $this->db->update($table);        
         }else if($crud == self::$DB_CRUD){

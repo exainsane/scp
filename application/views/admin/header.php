@@ -71,15 +71,14 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class="fa fa-home"></i> Home </a></li>
-                  <!-- <li><a><i class="fa fa-edit"></i> Tambah Data <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> New Data <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?php echo site_url("admin/post/new") ?>">Post Blog</a></li>
-                      <li><a href="<?php echo site_url("admin/services/new") ?>">Service</a></li>
-                      <li><a href="<?php echo site_url("admin/slider/new") ?>">Slider</a></li>
-                      <li><a href="<?php echo site_url("admin/team/new") ?>">Team</a></li>
-                      <li><a href="<?php echo site_url("admin/testimoni/new") ?>">Testimoni</a></li>
+                      <li><a href="<?php echo site_url("admin/shifts/new") ?>">Shifts</a></li>
+                      <li><a href="<?php echo site_url("admin/points/new") ?>">Points</a></li>
+                      <li><a href="<?php echo site_url("admin/schedules/new") ?>">Schedules</a></li>
+                      <li><a href="<?php echo site_url("admin/users/new") ?>">Users</a></li>
                     </ul>
-                  </li>    -->               
+                  </li>                  
                   <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<?php echo site_url("admin/shifts") ?>">Shifts</a></li>
