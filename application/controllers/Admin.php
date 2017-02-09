@@ -140,6 +140,7 @@ class Admin extends Ext_Controller {
                 ->IdFieldOnTable("id")
                 ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
                 ->RedirectTo(site_url("admin/".$_naming))
+                ->AllowEmpty(true)
                 ->ViewOnAdd("admin/io/".$_naming);
         
         $shift = new m_shift();
@@ -158,7 +159,10 @@ class Admin extends Ext_Controller {
                 endif;
                 $data->Parse(singlerow($data->ExactQuery()));                
             }else if($save == "save"){
-                $this->ParsePostData($data);
+                $this->ParsePostData($data, true);
+                if($data->schedule_base == null){
+                    $data->schedule_base = "-";
+                }
             }
             
             $IOManager->SetMode($action)

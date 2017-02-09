@@ -52,7 +52,7 @@ class Ext_Controller extends CI_Controller{
         }
         
         foreach ($postarr as $key=>$value){            
-            if(is_numeric(strpos($key, "form-")) && strlen($value) > 0){
+            if(is_numeric(strpos($key, "form-")) && !empty($value)){            
                 $tkey = str_replace("form-", "", $key);
                 $data[$tkey] = $value;
             }
@@ -129,6 +129,7 @@ class IOManager{
     private $footer;
     private $urlpost;
     private $urlredir;
+    private $allowEmptyField;
     function __construct(&$instance) {
         $this->ci =& $instance;        
     }
@@ -157,6 +158,10 @@ class IOManager{
      */
     function IdFieldOnTable($idfield){
         $this->idfield = $idfield;
+        return $this;
+    }
+    function AllowEmpty($allow){
+        $this->allowEmptyField = $allow;
         return $this;
     }
     /**
@@ -592,9 +597,9 @@ abstract class EntityModel{
             }
             //We no longer use Password Field here, since its secret
             unset($attrs[$pwfield]);
-        }
-        
-        foreach ($attrs as $key => $value){                                    
+        }        
+        foreach ($attrs as $key => $value){    
+            
             if(is_array($obj)){
                 if(isset($obj[$key])){
                     $this->$key = $obj[$key];
@@ -605,8 +610,7 @@ abstract class EntityModel{
                     $this->$key = $obj->$key;
                 }
             }
-        }
-        
+        }        
         
     }
     public function Update(){

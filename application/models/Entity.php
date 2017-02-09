@@ -86,7 +86,8 @@ class m_schedule extends EntityModel{
    public $_enable;
    public $shift_id;
    public $point_id;
-   public $schedule;
+   public $schedule_base;
+   public $after;
 }
 class m_shift extends EntityModel{ 
    function __construct(){

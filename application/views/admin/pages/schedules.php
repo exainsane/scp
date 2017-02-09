@@ -23,7 +23,8 @@
                   <th>No</th>                  
                   <th>Shift</th>
                   <th>Point</th>                  
-                  <th>Schedule</th> 
+                  <th>Schedule</th>
+                  <th>Schedule Delta (To first Point)</th> 
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -36,7 +37,8 @@
                     <td><?php echo ++$i ?></td>                                  
                     <td><?php echo $data->shift_id ?></td>                    
                     <td><?php echo $data->point_id ?></td>                                        
-                    <td><?php echo $data->schedule ?></td>    
+                    <td><?php echo $data->schedule_base ?></td>    
+                    <td><?php echo $data->after ?></td>    
                     <td><center>
                           <a href="<?php echo site_url("admin/schedules/edit/".$enc_id) ?>" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-warning"> <i class="fa fa-pencil"></i> </a>
                           <a href="<?php echo site_url("admin/schedules/delete/".$enc_id) ?>" data-toggle="tooltip" title="Hapus" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin?\')"> <i class="fa fa-trash"></i> </a>

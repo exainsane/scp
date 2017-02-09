@@ -46,9 +46,17 @@
             <br><br>
 
             <div class="form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12">Schedule (hour)</label>
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Schedule (Hour)</label>
               <div class="col-md-9 col-sm-9 col-xs-12">
-                <input type="text" class="form-control" required="required" placeholder="Judul Testimoni" value="<?php echo $schedule ?>" name="form-schedule">
+                <input type="text" class="form-control" placeholder="Base Time" value="<?php echo $schedule_base ?>" name="form-schedule_base">
+              </div>
+            </div>
+            <br><br>
+
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">After First Schedule (Minute)</label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input type="text" class="form-control" required="required" placeholder="Base Time" value="<?php echo $after ?>" name="form-after">
               </div>
             </div>
             <br><br>
