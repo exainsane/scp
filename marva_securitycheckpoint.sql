@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2017 at 04:20 AM
+-- Generation Time: Feb 09, 2017 at 02:15 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -129,7 +129,8 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
   `_enable` tinyint(1) NOT NULL DEFAULT '1',
   `shift_id` int(255) NOT NULL,
   `point_id` bigint(255) NOT NULL,
-  `schedule` time NOT NULL DEFAULT '00:12:00',
+  `schedule_base` varchar(8) NOT NULL DEFAULT '00:00:00',
+  `after` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `shift_id` (`shift_id`),
   KEY `point_id` (`point_id`)
@@ -139,15 +140,15 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
 -- Dumping data for table `m_schedule`
 --
 
-INSERT INTO `m_schedule` (`id`, `_enable`, `shift_id`, `point_id`, `schedule`) VALUES
-(7, 1, 1, 1, '12:00:00'),
-(8, 1, 1, 2, '13:00:00'),
-(9, 1, 1, 3, '15:00:00'),
-(10, 1, 1, 4, '17:00:00'),
-(11, 1, 2, 1, '18:00:00'),
-(12, 1, 2, 2, '19:30:00'),
-(13, 1, 2, 3, '21:30:00'),
-(14, 1, 2, 4, '01:00:00');
+INSERT INTO `m_schedule` (`id`, `_enable`, `shift_id`, `point_id`, `schedule_base`, `after`) VALUES
+(7, 1, 1, 1, '12:00:00', 0),
+(8, 1, 1, 2, '-', 60),
+(9, 1, 1, 3, '-', 120),
+(10, 1, 1, 4, '-', 240),
+(11, 1, 2, 1, '18:00:00', 0),
+(12, 1, 2, 2, '-', 120),
+(13, 1, 2, 3, '-', 180),
+(14, 1, 2, 4, '-', 240);
 
 -- --------------------------------------------------------
 
@@ -192,16 +193,16 @@ CREATE TABLE IF NOT EXISTS `m_token` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_user_2` (`id_user`),
   KEY `id_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=108 ;
 
 --
 -- Dumping data for table `m_token`
 --
 
 INSERT INTO `m_token` (`id`, `id_user`, `token`) VALUES
-(95, 4, 'sLJNsV12FSf5VA1FBvp1vB2RYmXpTJOmAdFXSJ8U9Nhrd'),
-(99, 8, 'EB1WJR6BdmN2V1JVelYwWh9yrjjdyp5eD2xPv9iIweq7x'),
-(100, 7, 'O4ffwmMdq3ZlQyXRDShu8u2rblOr7UKHNbpWzARog8KLe');
+(101, 4, 'wG9EHaylldDlHGkgtV7bSMWGECkTZfcpD12hMLN8bRY41'),
+(106, 8, 'KT6hrcKp3TcDEgfURXfIKf42WO1jvUXw3eg8E1I8VWHWX'),
+(107, 7, 'qMtKwZptCQXgk4tzIPMnpUf9tvGRwktYDBqtp3UNVSLVN');
 
 -- --------------------------------------------------------
 
