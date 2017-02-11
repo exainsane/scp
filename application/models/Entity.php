@@ -55,7 +55,7 @@ class m_device_key extends EntityModel{
    public $_enable;
    public $used_by;
    public $for_company;
-   public $key;
+   public $device_key;
    public $verified;
 }
 class m_point extends EntityModel{ 
@@ -76,7 +76,7 @@ class m_point_key extends EntityModel{
    public $_enable;
    public $used_by;
    public $for_company;
-   public $key;
+   public $point_key;
    public $verified;
 }
 class m_schedule extends EntityModel{ 
@@ -166,8 +166,26 @@ class m_token extends EntityModel{
    public $token;
 }
 
+class t_device_key_request extends EntityModel{ 
+   function __construct(){
+      parent::__construct("t_device_key_request");
+   }   public $id;
+   public $request_time;
+   public $user_id;
+   public $request_by;
+   public $approved;
+}
+class t_point_key_request extends EntityModel{ 
+   function __construct(){
+      parent::__construct("t_point_key_request");
+   }   public $id;
+   public $request_time;
+   public $point_id;
+   public $request_by;
+   public $approved;
+}
 /*
- * Helper Models
+ * POST/GET Models
  */
 
 class LoginForm extends EntityModel{    
@@ -177,4 +195,20 @@ class LoginForm extends EntityModel{
    public $username;
    public $password;
    
+}
+class DeviceRequest extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+
+    public $uid;
+    public $key;
+}
+class PointRequest extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+    
+    public $pid;
+    public $key;
 }

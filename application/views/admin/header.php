@@ -37,7 +37,8 @@
     <link href="<?php echo base_url("assets/ui/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css") ?>" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="<?php echo base_url("assets/ui/build/css/custom.min.css") ?>" rel="stylesheet">
+    <link href="<?php echo base_url("assets/ui/build/css/custom.css") ?>" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url("assets/css/admin.css") ?>">
   </head>
 
   <body class="nav-md">

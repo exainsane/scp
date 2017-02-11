@@ -86,18 +86,21 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 //User defined constants
-define("USER_LEVEL_SISWA", 1);
-define("USER_LEVEL_KEPSEK", 2);
-define("USER_LEVEL_GURU",3);
-define("USER_LEVEL_ADMIN",4);
-define("USER_LEVEL_SUPERADMIN",5);
-
-define("TIPE_SOAL_UTAMA",1);
-define("TIPE_SOAL_KHUSUS",2);
 
 define("FORM_MODE_ADD",1);
 define("FORM_MODE_EDIT",2);
 
 //USER-DEFINED CONSTANTS
 
-define("SESSIONKEY","UNJM-");
+define("SESSIONKEY","MRVSCP-");
+
+/*
+ * Constants in Class
+ * to enable iteration
+ */
+class USERLEVEL{
+    public static $SUPERADMIN = "999";
+    public static $ADMINISTRATOR = "10";
+    public static $OPERATOR = "9";
+    public static $FIELD_EXECUTOR = "8";
+}

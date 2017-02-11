@@ -36,7 +36,15 @@ class Auth extends Api_Controller {
             $return->status = "ok";
             $return->message = "Login Success";
             $return->token = $auth->token;
-            $return->accountdata = $auth->CurrentUser();
+            $udt = TransformIntoStdClass($auth->CurrentUser());
+            $shift = new m_shift();
+            $shift->id = $udt->shift;
+            
+            $shift->Parse(singlerow($shift->ExactQuery()));
+            
+            $udt->shift_label = $shift->title;
+            
+            $return->accountdata = $udt;
             
         }else{
             $return = new stdClass();

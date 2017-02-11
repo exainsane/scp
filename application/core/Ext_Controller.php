@@ -22,7 +22,7 @@ interface IFileUpload{
 class Ext_Controller extends CI_Controller{    
     protected $cfg = array();
     protected $cred = array();
-    protected $headerUI, $footerUI;
+    protected $headerUI = null, $footerUI = null;
     protected $uidata = array();
     public function SetUIData($key,$value){
         $this->uidata[$key] = $value;
@@ -32,9 +32,13 @@ class Ext_Controller extends CI_Controller{
         $this->footerUI = $footer;
     }
     public function LoadUI($ui){
+        if($this->headerUI != null)
         $this->load->view($this->headerUI);
+        
         $this->load->view($ui,$this->uidata);
-        $this->load->view($this->footerUI);
+        
+        if($this->footerUI != null)
+            $this->load->view($this->footerUI);
     }
     public function ParsePostData(EntityModel &$obj){
         $postarr = $this->input->post(null);
@@ -305,7 +309,7 @@ class IOManager{
         return $this;
     }
 }
-abstract class EntityModel{    
+abstract class EntityModel{        
     public static function ManageUploadFile($formlabel){
         $ci =& get_instance();
         $ci->load->library("upload");                
@@ -489,7 +493,13 @@ abstract class EntityModel{
         }
         if($ins < 1) return false;
         $ci->db->from($table);
-        return $ci->db->insert();
+        $ins = $ci->db->insert();
+        
+        $fid = $this->GetIDField();
+        
+        $this->$fid = $ci->db->insert_id();
+        
+        return $ins;
                 
     }
     public function RangedQuery(){

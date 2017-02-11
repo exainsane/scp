@@ -18,7 +18,7 @@ class Home extends Ext_Controller implements IAuthenticator {
     function __construct() {
         parent::__construct();
                 
-        $this->SetHeaderAndFooter("home/header", "home/footer");
+//        $this->SetHeaderAndFooter("home/header", "home/footer");
     }
         
     function index(){                   
@@ -103,5 +103,14 @@ class Home extends Ext_Controller implements IAuthenticator {
             
             echo "}";
         }
+    }
+    public function hooo(){        
+        //$this->LoadUI("admin/email/mail_request");
+        
+        $boo = "BOOO";
+        $fuh = function(){
+            global $boo;
+            echo $boo;  
+        };
     }
 }

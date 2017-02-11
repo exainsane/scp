@@ -219,7 +219,8 @@ class Authenticator {
         return get_instance()->session->userdata(SESSIONKEY."loggeduserid") != null;
     }
     public function VerifyLevel($level){
-        
+        $user = $this->CurrentUser();
+        return $user->user_level >= $level;
     }
     private function SaveCredentialInfo($obj){
         $ci =& get_instance();

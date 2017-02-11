@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2017 at 02:15 PM
+-- Generation Time: Feb 11, 2017 at 05:29 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -64,12 +64,19 @@ CREATE TABLE IF NOT EXISTS `m_device_key` (
   `_enable` tinyint(1) NOT NULL DEFAULT '1',
   `used_by` bigint(255) NOT NULL,
   `for_company` bigint(255) NOT NULL,
-  `key` varchar(255) NOT NULL,
+  `device_key` varchar(255) NOT NULL,
   `verified` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `used_by` (`used_by`),
   KEY `for_company` (`for_company`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `m_device_key`
+--
+
+INSERT INTO `m_device_key` (`id`, `_enable`, `used_by`, `for_company`, `device_key`, `verified`) VALUES
+(1, 1, 4, 0, '000101011010100101001010010101', 0);
 
 -- --------------------------------------------------------
 
@@ -111,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `m_point_key` (
   `_enable` tinyint(1) NOT NULL DEFAULT '1',
   `used_by` bigint(255) DEFAULT NULL,
   `for_company` bigint(255) NOT NULL,
-  `key` varchar(255) NOT NULL,
+  `point_key` varchar(255) NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `used_by` (`used_by`),
@@ -193,16 +200,16 @@ CREATE TABLE IF NOT EXISTS `m_token` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_user_2` (`id_user`),
   KEY `id_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=108 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
 
 --
 -- Dumping data for table `m_token`
 --
 
 INSERT INTO `m_token` (`id`, `id_user`, `token`) VALUES
-(101, 4, 'wG9EHaylldDlHGkgtV7bSMWGECkTZfcpD12hMLN8bRY41'),
 (106, 8, 'KT6hrcKp3TcDEgfURXfIKf42WO1jvUXw3eg8E1I8VWHWX'),
-(107, 7, 'qMtKwZptCQXgk4tzIPMnpUf9tvGRwktYDBqtp3UNVSLVN');
+(110, 4, 'epeum7XA5BdW6fqHCSzroQ8fBZ4HYFOUKHptCsguPKmw5'),
+(114, 7, 'w313oq7ejgoMShbbeFlnUadR3ZDAeRW2w11ay89soseRE');
 
 -- --------------------------------------------------------
 
@@ -229,16 +236,17 @@ CREATE TABLE IF NOT EXISTS `m_user` (
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `shift` (`shift`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `m_user`
 --
 
 INSERT INTO `m_user` (`id`, `_enable`, `user_activated`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`, `last_active`) VALUES
-(4, 1, 1, 'exainsane22', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07', '+6287870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00'),
-(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 0, '-', 0, '0000-00-00 00:00:00'),
-(8, 1, 1, 'exairie', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07 No 56 Babakan Tarikolot, Cibinong', '087870980562', 'user@exainsane.com', 2, 0, '-', 0, '0000-00-00 00:00:00');
+(4, 1, 1, 'exainsane22', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07', '+6287870980562', 'rnugraha305@gmail.com', 1, 10, '', 0, '2017-02-11 08:11:20'),
+(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 9, '', 0, '2017-02-11 10:36:06'),
+(8, 1, 1, 'exairie', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07 No 56 Babakan Tarikolot, Cibinong', '087870980562', 'user@exainsane.com', 2, 0, '', 0, '2017-02-11 08:00:20'),
+(9, 1, 1, 'administrator', '0192023a7bbd73250516f069df18b500', 'Marva Cipta', 'Admin', '-', '-', 'admin@exairie.net', 3, 999, '', 0, '2017-02-11 09:34:53');
 
 -- --------------------------------------------------------
 
@@ -277,6 +285,29 @@ CREATE TABLE IF NOT EXISTS `t_checkout` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t_device_key_request`
+--
+
+CREATE TABLE IF NOT EXISTS `t_device_key_request` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `_enable` tinyint(1) NOT NULL DEFAULT '1',
+  `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_id` bigint(255) NOT NULL,
+  `request_by` int(255) NOT NULL,
+  `approved` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `t_device_key_request`
+--
+
+INSERT INTO `t_device_key_request` (`id`, `_enable`, `request_time`, `user_id`, `request_by`, `approved`) VALUES
+(1, 1, '2017-02-11 15:38:13', 4, 9999, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `t_event_report`
 --
 
@@ -293,6 +324,33 @@ CREATE TABLE IF NOT EXISTS `t_event_report` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_point_key_request`
+--
+
+CREATE TABLE IF NOT EXISTS `t_point_key_request` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `_enable` tinyint(1) NOT NULL DEFAULT '1',
+  `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `point_id` bigint(255) NOT NULL,
+  `request_by` bigint(255) NOT NULL,
+  `approved` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `point_id` (`point_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `t_point_key_request`
+--
+
+INSERT INTO `t_point_key_request` (`id`, `_enable`, `request_time`, `point_id`, `request_by`, `approved`) VALUES
+(1, 1, '2017-02-11 15:45:33', 1, 9999, 0),
+(2, 1, '2017-02-11 15:46:23', 4, 9999, 0),
+(3, 1, '2017-02-11 16:18:14', 2, 9999, 0),
+(4, 1, '2017-02-11 16:20:35', 3, 9999, 0);
 
 --
 -- Constraints for dumped tables
@@ -341,6 +399,12 @@ ALTER TABLE `t_checkout`
 --
 ALTER TABLE `t_event_report`
   ADD CONSTRAINT `t_event_report_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `m_user` (`id`);
+
+--
+-- Constraints for table `t_point_key_request`
+--
+ALTER TABLE `t_point_key_request`
+  ADD CONSTRAINT `t_point_key_request_ibfk_1` FOREIGN KEY (`point_id`) REFERENCES `m_point` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

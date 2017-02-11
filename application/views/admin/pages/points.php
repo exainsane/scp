@@ -25,6 +25,7 @@
                   <th>Latitude</th>
                   <th>Longitude</th>
                   <th>Auth Key</th>
+                  <th>QR Code</th>
                   <th>Actions</th>                 
                 </tr>
               </thead>
@@ -36,7 +37,58 @@
                     <td><?php echo $data->point_name ?></td>                    
                     <td><?php echo $data->point_lat ?></td>                    
                     <td><?php echo $data->point_long ?></td>                    
-                    <td><?php echo $data->point_key ?></td> 
+                    <td><?php
+                      if(strlen($data->point_key) != 0 && strlen($data->point_key) == 20){
+                        echo $data->point_key;
+                      }else{
+                        ?>
+                        <div class="dropdown">
+                          <button class="btn btn-sm btn-info dropdown-toggle" id="drop_addkey<?php echo $data->id ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register a Key</button>
+                          <div class="dropdown-menu row" aria-labelledby="drop_addkey<?php echo $data->id ?>">
+                            <div class="col-md-12">
+                              <label for="">POINT NAME : <?php echo $data->point_name ?></label>
+                            </div>
+                            <div class="col-md-12">
+                              <label for="">Already have a Key</label>
+                            </div>
+                            <div class="col-md-12">
+                              <form action="<?php echo site_url("admin/insertkey/point") ?>" method="POST">
+                                <div class="form-group">
+                                  <input type="hidden" name="form-pid" value="<?php echo $data->id ?>">
+                                  <input type="text" name="key" class="form-control" maxlength="20">
+                                </div>
+                                <button class="btn btn-sm btn-default">Verify</button>
+                              </form>
+                            </div>
+                            <?php if ($req_check($data->id) == false): ?>
+                              <span class="divider"></span>
+                                <div class="col-md-12">
+                                  <label for="">Request a Key</label>
+                                </div>
+                                <div class="col-md-12">
+                                  <form action="<?php echo site_url("admin/requestkey/point") ?>" method="POST">
+                                    <input type="hidden" name="form-pid" value="<?php echo $data->id ?>">
+                                    <button class="btn btn-sm btn-warning">Request Key</button>
+                                  </form>
+                                </div>
+                              </div>
+                            <?php else: ?>
+                              <div class="col-md-12">
+                                <label for="">Key Requested</label>
+                              </div>
+                            <?php endif ?>
+                            
+                        </div>
+                        <?php
+                      }
+                      ?>
+                    </td> 
+                    <td>
+                      <form action="<?php echo site_url("admin/generateqr") ?>" method="POST">
+                        <input type="hidden" value="<?php echo $data->id ?>">
+                        <button class="btn btn-sm btn-warning">Generate QR</button>
+                      </form>
+                    </td>
                     <td><center>
                           <a href="<?php echo site_url("admin/points/edit/".$enc_id) ?>" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-warning"> <i class="fa fa-pencil"></i> </a>
                           <a href="<?php echo site_url("admin/points/delete/".$enc_id) ?>" data-toggle="tooltip" title="Hapus" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin?\')"> <i class="fa fa-trash"></i> </a>
