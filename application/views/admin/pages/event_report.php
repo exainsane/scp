@@ -21,24 +21,28 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Lokasi</th> 
-                  <th>Penjaga</th>
-                  <th>Aksi</th>
-                  <th>Keterangan</th>
+                  <th>Time</th>
+                  <th>Nearest Point</th>
+                  <th>Username</th> 
+                  <th>Caption</th>
+                  <th>Description</th>
+                  <th>Image</th>
                 </tr>
               </thead>
-              
-             
+              <tbody>
+                <?php $i=0;foreach ($events as $data): ?>
+                <?php EntityModel::LoadReference($data, "user_id", "m_user", "username") ?>
                   <tr>
-                    <td>1</td>
-                    <td>Kamar</td>                    
-                    <td>Haji Sodikkin</td>
-                    <td>ena-ena</td>
-                    <td>Harus dijelasin?</td>
+                      <td><?php echo ++$i ?></td>
+                      <td><?php echo $data->time ?></td>         
+                      <td><?php echo $data->point_name ?></td>           
+                      <td><?php echo $data->user_id ?></td>
+                      <td><?php echo $data->title ?></td>
+                      <td><?php echo $data->description ?></td>
+                      <td><img src="<?php echo base_url($data->img) ?>" alt="" class="imgintable"></td>
                   </tr>
-              
-                
-              
+                <?php endforeach ?>
+              </tbody>
             </table>
 
           </div>

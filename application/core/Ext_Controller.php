@@ -31,19 +31,18 @@ class Ext_Controller extends CI_Controller{
         $this->headerUI = $header;
         $this->footerUI = $footer;
     }
-    public function LoadUI($ui){
-        if($this->headerUI != null)
+    public function LoadUI($ui, $removeheaderfooter = false){
+        if($this->headerUI != null && !$removeheaderfooter)
         $this->load->view($this->headerUI);
         
         $this->load->view($ui,$this->uidata);
         
-        if($this->footerUI != null)
+        if($this->footerUI != null && !$removeheaderfooter)
             $this->load->view($this->footerUI);
     }
     public function ParsePostData(EntityModel &$obj){
         $postarr = $this->input->post(null);
         $data = array();
-        
         if($obj instanceof IUseEncodedID){            
             $idfield = $obj->GetIDField();
             if(isset($postarr["form-".$idfield])){
@@ -310,10 +309,9 @@ class IOManager{
     }
 }
 abstract class EntityModel{        
-    public static function ManageUploadFile($formlabel){
+    public static function ManageUploadFile($formlabel){            
         $ci =& get_instance();
-        $ci->load->library("upload");                
-        
+        $ci->load->library("upload"); 
         if(!isset($_FILES[$formlabel]) || $_FILES[$formlabel]['error'] == 4){
             if($ci->input->post("old-".$formlabel) != null)
             {
@@ -330,14 +328,14 @@ abstract class EntityModel{
         $config['upload_path'] = $savefilepath;
         $config['file_name'] = $naming(get_filename_extension($uploaded_name));
         $config['file_ext_tolower'] = $savefilepath;
-        $config['allowed_types'] = "jpg|png";
+        $config['allowed_types'] = "*";
         
         recursive_check_add_dir($config['upload_path'], "/");
         
         $ci->upload->initialize($config);
         
         if(!$ci->upload->do_upload($formlabel)){
-            app_error("Error on uploading! : ".$ci->upload->display_errors());            
+            app_error("Error on uploading! : ".$ci->upload->display_errors(), true);            
         }
         
         return $savefilepath.$ci->upload->data("file_name");
@@ -467,8 +465,7 @@ abstract class EntityModel{
         
         $table = $this->_attrib['table'];
         
-        $attrs = get_object_vars($this);
-        
+        $attrs = get_object_vars($this);        
         unset($attrs[$this->_attrib['key']]);
         unset($attrs['_attrib']);
         
@@ -483,17 +480,15 @@ abstract class EntityModel{
             if($value == null) continue;
             $ci->db->set($key,$value);
             $ins++;
-//            $cols += $key;
-//            $values += "'"+$value+"'";
-//            
-//            if($pos < $lim){
-//                $cols += ",";
-//                $values += ",";
-//            }
         }
         if($ins < 1) return false;
         $ci->db->from($table);
-        $ins = $ci->db->insert();
+        
+        $q = $ci->db->get_compiled_insert();
+        
+        $ins = $ci->db->query($q);
+        
+        dblog($q);
         
         $fid = $this->GetIDField();
         
@@ -502,7 +497,7 @@ abstract class EntityModel{
         return $ins;
                 
     }
-    public function RangedQuery(){
+    public function RangedQuery($beforeExecute = null){
         $ci =& get_instance();
         
         $attrs = get_object_vars($this);
@@ -521,13 +516,21 @@ abstract class EntityModel{
         
         foreach ($attrs as $key => $value) {            
             if($value == null) continue;
-            if(!is_array($value)) continue;
+            if(is_array($value)) 
+            {   
+                $ci->db->where_in($key, $value);
+                continue;
+            }
+            $ci->db->where($key, $value);
             
-            $ci->db->where_in($key, $value);
-        }                
-        return $ci->db->get();
+        }        
+        if($beforeExecute != null){
+            $beforeExecute($ci);
+        }
+        $q = $ci->db->get_compiled_select(); 
+        return $ci->db->query($q);
     }
-    public function ExactQuery(){
+    public function ExactQuery($beforeExecute = null){
         $ci =& get_instance();
         
         $attrs = get_object_vars($this);
@@ -548,10 +551,12 @@ abstract class EntityModel{
         }
         foreach ($attrs as $key => $value) {              
             if($value == null) continue;
-            
             $ci->db->where($key, $value);
         }        
-        $s = $ci->db->get_compiled_select();
+        if($beforeExecute != null){
+            $beforeExecute($ci);            
+        }
+        $s = $ci->db->get_compiled_select();    
         
         return $ci->db->query($s);
                

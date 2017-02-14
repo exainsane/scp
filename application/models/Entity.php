@@ -57,6 +57,7 @@ class m_device_key extends EntityModel{
    public $for_company;
    public $device_key;
    public $verified;
+   public $valid_until;
 }
 class m_point extends EntityModel{ 
    function __construct(){
@@ -68,6 +69,7 @@ class m_point extends EntityModel{
    public $point_long;
    public $point_key;
    public $company_id;
+   public $point_code;
 }
 class m_point_key extends EntityModel{ 
    function __construct(){
@@ -78,6 +80,7 @@ class m_point_key extends EntityModel{
    public $for_company;
    public $point_key;
    public $verified;
+   public $valid_until;
 }
 class m_schedule extends EntityModel{ 
    function __construct(){
@@ -131,8 +134,17 @@ class m_user_level extends EntityModel{
    public $_enable;
    public $level_name;
 }
-class t_checkout extends EntityModel{ 
-   function __construct(){
+class t_checkout extends EntityModel implements IFileUpload{ 
+    public function GetFileField() {
+        return "img";
+    }
+
+    public function SaveFileUpload() {
+        $this->img = parent::ManageUploadFile("form-img");
+        return $this->img;
+    }
+
+    function __construct(){
       parent::__construct("t_checkout");
    }   public $id;
    public $_enable;
@@ -143,14 +155,26 @@ class t_checkout extends EntityModel{
    public $point_name;
    public $point_lat;
    public $point_long;
+   public $img;
 }
-class t_event_report extends EntityModel{ 
-   function __construct(){
+class t_event_report extends EntityModel implements IFileUpload{ 
+    public function GetFileField() {
+        return "img";
+    }
+
+    public function SaveFileUpload() {
+        $this->img = parent::ManageUploadFile("form-img");
+        return $this->img;
+    }
+
+    function __construct(){
       parent::__construct("t_event_report");
-   }   public $id;
+   }   
+   public $id;
    public $_enable;
    public $user_id;
    public $time;
+   public $title;
    public $point_name;
    public $description;
    public $point_lat;

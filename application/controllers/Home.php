@@ -105,7 +105,7 @@ class Home extends Ext_Controller implements IAuthenticator {
         }
     }
     public function hooo(){        
-        //$this->LoadUI("admin/email/mail_request");
+        $this->LoadUI("admin/exported/point_exported");
         
         $boo = "BOOO";
         $fuh = function(){

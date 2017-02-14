@@ -20,6 +20,26 @@ class Api extends Api_Controller {
        
         return $abtq->ExactQuery()->result();
     }
+    function postcheckout(){
+        $event = new t_checkout();
+        
+        $this->ParsePostData($event);
+        if($event->Insert() >= 1){
+            return $this->Success("Sync Success");
+        }
+        
+        return $this->Fail();
+    }
+    function postevent(){
+        $event = new t_event_report();
+        
+        $this->ParsePostData($event);
+        if($event->Insert() >= 1){
+            return $this->Success("Sync Success");
+        }
+        
+        return $this->Fail();
+    }
     function getslider(){
         $sliders = new ModelUISlider();                
         
@@ -305,7 +325,7 @@ class Api extends Api_Controller {
         $points = new m_point();        
         $points->id = $pointids;
         
-        $presult = $points->RangedQuery()->result();
+        $presult = $points->RangedQuery($onexecute)->result();
         
         if(count($presult) < 1)
         {

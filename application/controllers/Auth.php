@@ -18,7 +18,6 @@ class Auth extends Api_Controller {
     function __construct() {
         parent::__construct();
     }
-    
     function postlogin(){
         $return = new stdClass();
         $return->status = "fail";
@@ -30,6 +29,9 @@ class Auth extends Api_Controller {
         
         
         $auth = Authenticator::GetContext();
+        $checkaukey = function(&$ci){
+          $ci->db->where("length(device_key) = 20");
+        };
         $auth instanceof Authenticator;
         if ($auth->Login($data->username, $data->password)){
             
@@ -37,6 +39,15 @@ class Auth extends Api_Controller {
             $return->message = "Login Success";
             $return->token = $auth->token;
             $udt = TransformIntoStdClass($auth->CurrentUser());
+            
+            $key = $udt->device_key;
+            $this->db->where("device_key",$key)
+                    ->where("valid_until >= date(now())");
+            $chk = $this->db->get("m_device_key");
+            if($chk->num_rows() != 1){
+                return $this->Fail("Device key not found or no loger valid!");                
+            }
+            
             $shift = new m_shift();
             $shift->id = $udt->shift;
             
@@ -49,7 +60,7 @@ class Auth extends Api_Controller {
         }else{
             $return = new stdClass();
             $return->status = "fail";
-            $return->message = "Failed : ".$auth->last_error;
+            $return->msg = "Failed : ".$auth->last_error;
             
         }
         return $return;

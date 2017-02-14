@@ -88,6 +88,29 @@
                       <li><a href="<?php echo site_url("admin/users") ?>">Users</a></li>
                     </ul>
                   </li>
+                  <li><a><i class="fa fa-table"></i> SUPERADMIN <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#">Device</a>
+                        <ul class="nav child_menu">
+                          <li><a href="<?php echo site_url("admin/device_keys") ?>">Device Keys</a></li>
+                          <li><a href="<?php echo site_url("admin/device_keys/new") ?>">New Key</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Point</a>
+                        <ul class="nav child_menu">
+                          <li><a href="<?php echo site_url("admin/point_keys") ?>">Point Keys</a></li>
+                          <li><a href="<?php echo site_url("admin/point_keys/new") ?>">New Key</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-tasks"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<?php echo site_url("admin/history") ?>">Checkout History</a></li>
+                      <li><a href="<?php echo site_url("admin/history") ?>">Accuracy Reports</a></li>
+                      <li><a href="<?php echo site_url("admin/events") ?>">Event Reports</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
 

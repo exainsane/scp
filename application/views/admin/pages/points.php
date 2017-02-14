@@ -84,10 +84,25 @@
                       ?>
                     </td> 
                     <td>
-                      <form action="<?php echo site_url("admin/generateqr") ?>" method="POST">
-                        <input type="hidden" value="<?php echo $data->id ?>">
-                        <button class="btn btn-sm btn-warning">Generate QR</button>
-                      </form>
+                      <div class="dropdown">
+                          <button class="btn btn-sm btn-warning dropdown-toggle" id="drop_crtqrkey<?php echo $data->id ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Generate QR</button>
+                          <div class="dropdown-menu row" aria-labelledby="drop_crtqrkey<?php echo $data->id ?>">
+                            <div class="col-md-12">
+                              <label for="">POINT NAME : <?php echo $data->point_name ?></label>
+                            </div>
+                            <div class="col-md-12">
+                              <label for="">
+                                Note : Generating new QR Code will make the old QR become invalid. <br>
+                                Make sure ALL device holder resync their app after you generate a new QR
+                              </label>
+                            </div>
+                            <div class="col-md-12">
+                              <form action="<?php echo site_url("admin/qr/generate") ?>" method="POST">
+                                <input type="hidden" name="form-pid" value="<?php echo $data->id ?>">
+                                <button class="btn btn-sm btn-danger">Confirm</button>
+                              </form>
+                            </div>                          
+                        </div>
                     </td>
                     <td><center>
                           <a href="<?php echo site_url("admin/points/edit/".$enc_id) ?>" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-warning"> <i class="fa fa-pencil"></i> </a>

@@ -118,3 +118,8 @@ function app_error($msg, $terminate = false){
         }
     endif;
 }
+function dblog($txt){
+    $ci =& get_instance();
+    $ci->db->set("msg",$txt);
+    $ci->db->insert("log");
+}

@@ -278,11 +278,13 @@ class Admin extends Ext_Controller {
     }
     
      function history(){
-        
+        $checkout = new t_checkout();
+        $this->SetUIData("checkouts",$checkout->ExactQuery()->result());
         $this->LoadUI("admin/pages/trans_history.php");
     }
-    function report(){
-        
+    function events(){       
+        $checkout = new t_event_report();
+        $this->SetUIData("events",$checkout->ExactQuery()->result());
         $this->LoadUI("admin/pages/event_report.php");
     }
     /*
@@ -340,6 +342,10 @@ class Admin extends Ext_Controller {
         $pdata->Parse(singlerow($pdata->ExactQuery()));
         
         $this->load->library('emogrifier');
+        
+        /*
+         * TODO : Create per-user Invoice Mail
+         */
         
         $mbodhtm = $this->load->view("admin/email/mail_request_point", array("data"=>$data,"pdata"=>$pdata), true);
 	$mbodcss = file_get_contents(base_url("assets/css/mail.css"));
@@ -403,6 +409,11 @@ class Admin extends Ext_Controller {
         
         $pdata->Parse(singlerow($pdata->ExactQuery()));
         
+        /*
+         * TODO : Create per-user Invoice Mail
+         */
+                
+                
         $this->load->library('emogrifier');
         
         $mbodhtm = $this->load->view("admin/email/mail_request_device", array("data"=>$data,"pdata"=>$pdata), true);
@@ -440,6 +451,130 @@ class Admin extends Ext_Controller {
         
         $this->LoadUI("admin/pages/state_alert");
     }    
+    public function qr($generate = null){
+        if($generate != "generate"){
+            show_404();
+        }
+        
+        $pid = $this->input->post("form-pid");
+        
+        $pdata = new m_point();
+        $pdata->id = $pid;
+        
+        $q = $pdata->ExactQuery();
+        
+        if($q->num_rows() != 1){
+            show_404();
+        }
+        
+        $pdata->Parse(singlerow($q));
+        
+        $pdata->point_code = Authenticator::GenerateRandomKey("35", "POINT-");
+        
+        $pdata->Update();
+        
+        require APPPATH.'third_party/qr/qrlib.php';
+        ob_start();
+        
+        QRcode::png($pdata->point_key, false, "H", 10, 2);   
+        $imgdata = ob_get_contents();
+
+        ob_end_clean();
+        
+        $this->SetUIData("img", base64_encode($imgdata));
+        $this->SetUIData("pdata", $pdata);
+        $this->LoadUI("admin/exported/point_exported",true);
+    }
+    function insertkey($type = null){
+        if($type == null){
+            show_404();
+        }
+        
+        if($type == "point"){
+            $pid = $this->input->post("form-pid");
+            $key = $this->input->post("key");
+            
+            //Remove strips
+            $key = str_replace("-", "", $key);
+            
+            $data = new m_point_key();
+            $data->point_key = $key;
+            $data->used_by = $pid;
+            
+            $q = $data->ExactQuery();
+            
+            if($q->num_rows() != 1){
+                $this->state_notify(
+                        "Invalid Point Key", 
+                        "The point key that you entered to the system seems to be invalid!<br>"
+                        . "Re-check the key or if you think that this is a correct one, please contact the SUPERADMIN"
+                        . "<br><b>Hint : </b>One key may ONLY be used with the correct point based on the request!",
+                        site_url("admin/points"));
+                return;
+            }
+            
+            $point = new m_point();
+            $point->id = $data->used_by;
+            
+            $q = $point->ExactQuery();
+            if($q->num_rows() != 1){
+                $this->state_notify(
+                        "Invalid Point ID", 
+                        "Error in data. System cannot find the correct ID for the specified Point",
+                        site_url("admin/users"),
+                        "Please notify SUPERADMIN about this issue");
+                return;
+            }
+            
+            $point->Parse(singlerow($q));
+            $point->point_key = $data->point_key;
+            $point->Update();
+            
+            redirect(site_url("admin/points"));
+        }
+        if($type == "device"){
+            $pid = $this->input->post("form-uid");
+            $key = $this->input->post("key");
+            
+            //Remove strips
+            $key = str_replace("-", "", $key);
+            
+            $data = new m_device_key();
+            $data->device_key = $key;
+            $data->used_by = $pid;
+            
+            $q = $data->ExactQuery();
+            
+            if($q->num_rows() != 1){
+                $this->state_notify(
+                        "Invalid Device Key", 
+                        "The point key that you entered to the system seems to be invalid!<br>"
+                        . "Re-check the key or if you think that this is a correct one, please contact the SUPERADMIN"
+                        . "<br><b>Hint : </b>One key may ONLY be used with the correct device based on the request!",
+                        site_url("admin/users"));
+                return;
+            }
+            
+            $user = new m_user();
+            $user->id = $data->used_by;
+            
+            $q = $user->ExactQuery();
+            if($q->num_rows() != 1){
+                $this->state_notify(
+                        "Invalid User ID", 
+                        "Error in data. System cannot find the correct ID for the specified Point",
+                        site_url("admin/users"),
+                        "Please notify SUPERADMIN about this issue");
+                return;
+            }
+            
+            $user->Parse(singlerow($q));
+            $user->device_key = $data->device_key;
+            $user->Update();
+            
+            redirect(site_url("admin/users"));
+        }
+    }
     /*
      * Role : SUPERADMIN
      */
@@ -496,6 +631,80 @@ class Admin extends Ext_Controller {
         $shift = new m_device_key();
         $this->SetUIData("rows",$shift->ExactQuery()->result());
         $this->LoadUI("admin/pages/device_keys");
+    }
+    //
+    function point_keys($action = null, $id = null, $save = null){   
+        $_naming = "point_keys";
+        if($action == null){
+            $m = $_naming."_home";
+            return $this->$m();
+        }
+        
+        $IOManager = new IOManager($this);
+        $IOManager->Table("m_point_key")
+                ->IdFieldOnTable("id")
+                ->PostTo(site_url("admin/".$_naming."/".$action."/".($action == "new"?1:$id)."/save"))
+                ->RedirectTo(site_url("admin/".$_naming))
+                ->ViewOnAdd("admin/io/".$_naming);
+        
+        $this->db->where("point_key","");
+        $IOManager->AddReference("points", $this->db->get("m_point")->result());
+        
+        if($action == "edit" || $action == "new"){
+            $data = new m_point_key();
+            
+            if($action == "edit" && $save == null){
+                if($data instanceof IUseEncodedID):
+                    $data->SetID(decrypt($id, true));
+                else:
+                    $data->id = decrypt($id, true);
+                endif;
+                $data->Parse(singlerow($data->ExactQuery()));                
+            }else if($save == "save"){
+                $this->ParsePostData($data);
+            }
+            
+            $IOManager->SetMode($action)
+                    ->Data($data);
+            
+            if($save == null){
+                $IOManager->Show();
+            }else if($save == "save"){
+                $IOManager->Execute();
+            }
+            
+            return;
+        }        
+        
+        if($action == "delete"){
+            $IOManager->SetMode($action);
+            $IOManager->UseID(decrypt($id,true))
+                    ->Execute();
+        }
+    }    
+    private function point_keys_home(){
+        $shift = new m_point_key();
+        $this->SetUIData("rows",$shift->ExactQuery()->result());
+        $this->LoadUI("admin/pages/point_keys");
+    }
+    public function enablekey($type = null){
+        if($type == null){
+            show_404();
+        }
+        if($type == "point"){
+            $key = $this->input->post("form-kid");
+            $this->db->where("id",$key)
+                    ->set("verified",$this->input->post("form-en"));
+            $this->db->update("m_point_key");
+            redirect(site_url("admin/point_keys"));
+        }
+        if($type == "device"){
+            $key = $this->input->post("form-kid");
+            $this->db->where("id",$key)
+                    ->set("verified",$this->input->post("form-en"));
+            $this->db->update("m_device_key");
+            redirect(site_url("admin/device_keys"));
+        }
     }
    
 }

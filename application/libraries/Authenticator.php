@@ -71,7 +71,7 @@ class Authenticator {
             return true;
         }
     }
-    public function Login($username, $password){
+    public function Login($username, $password, $beforeprocess = null){
         $m = new m_user();
         
         $m instanceof IUsePasswordField;
@@ -80,10 +80,10 @@ class Authenticator {
         $m->username = $username;
         $m->SetPassword($password);
         
-        $q = $m->ExactQuery();
+        $q = $m->ExactQuery($beforeprocess);
         
         if($q->num_rows() != 1){
-            $this->last_error = "User Not Found";
+            $this->last_error = "User Not Found or Not yet activated";
             return false;
         }
         $m instanceof m_user;
@@ -244,5 +244,18 @@ class Authenticator {
             $pin .= $key[rand(0, count($key)-1)];
         }
         return $pin;	
+    }
+    public static function GenerateRandomKey($length, $prefix = "CODE"){        
+        $key = array(
+                'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+                '1','2','3','4','5','6','7','8','9'
+                );
+        
+        $pin = '';
+        for ($i=1;$i<=$length - strlen($prefix);$i++){
+            $pin .= $key[rand(0, count($key)-1)];
+        }
+        return $prefix.$pin;	
     }
 }

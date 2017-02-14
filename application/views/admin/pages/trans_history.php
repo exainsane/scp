@@ -10,7 +10,7 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-          <h2>Transaksi</h2>
+          <h2>Checkout History</h2>
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
           </ul>
@@ -21,24 +21,26 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Transaksi</th> 
-                  <th>Pos</th>
-                  <th>Nama Penjaga</th>
+                  <th>User</th> 
+                  <th>Post</th>
+                  <th>Checkout</th>
+                  <th>Schedule</th>
+                  <th>Image</th>                  
                 </tr>
               </thead>
-              
-                //hai sayang
-                  //hai lagi
+              <tbody>
+                <?php $i = 0; foreach ($checkouts as $data): ?>
+                <?php EntityModel::LoadReference($data, "user_id", "m_user", "username") ?>
                   <tr>
-                    <td>1</td>
-                    <td>Pembelian Istri</td>                    
-                    <td><center>
-                         8</center></td>
-                         <td>Haji Sodikin</td>
+                    <td><?php echo ++$i; ?></td>
+                    <td><?php echo $data->user_id ?></td>                    
+                    <td><?php echo $data->point_name ?></td>
+                    <td><?php echo $data->checkout_time ?></td>
+                    <td><?php echo $data->schedule_time ?></td>
+                    <td><img src="<?php echo base_url($data->img) ?>" alt="" class="imgintable"></td>
                   </tr>
-               //<#?php endforeach ?>
-                
-              
+                <?php endforeach ?>
+              </tbody>
             </table>
 
           </div>
