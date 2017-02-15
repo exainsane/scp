@@ -325,7 +325,7 @@ class Api extends Api_Controller {
         $points = new m_point();        
         $points->id = $pointids;
         
-        $presult = $points->RangedQuery($onexecute)->result();
+        $presult = $points->RangedQuery()->result();
         
         if(count($presult) < 1)
         {
