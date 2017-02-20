@@ -35,10 +35,18 @@ class Auth extends Api_Controller {
         $auth instanceof Authenticator;
         if ($auth->Login($data->username, $data->password)){
             
+            if($data->fcm_token != null){
+                $user = $auth->CurrentUser();
+                $user->fcm_token = $data->fcm_token;
+                $user->Update();
+            }
+            
             $return->status = "ok";
             $return->message = "Login Success";
             $return->token = $auth->token;
             $udt = TransformIntoStdClass($auth->CurrentUser());
+            
+            
             
             $key = $udt->device_key;
             $this->db->where("device_key",$key)

@@ -104,3 +104,10 @@ class USERLEVEL{
     public static $OPERATOR = "9";
     public static $FIELD_EXECUTOR = "8";
 }
+/*
+ * Firebase API
+ */
+class FIREBASECRED{
+    public static $API_KEY = "AAAA00J58Fw:APA91bGDrV-lMaMToToRjsWLYBUSFwS0rV_jAlONQts5p5q0qZKVdCnc6ZuXmd6TcHXNlmatU4JA_TllyNx8eGol3NSD03OmwA3Y3mrud9TKvEHkGIUxCio1lZGJL4yEg0pEx2mgajmq";
+    
+}

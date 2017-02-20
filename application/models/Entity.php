@@ -125,6 +125,7 @@ class m_user extends EntityModel implements IUsePasswordField{
    public $shift;
    public $user_level;
    public $device_key;
+   public $fcm_token;
    public $company_id;
 }
 class m_user_level extends EntityModel{ 
@@ -216,6 +217,7 @@ class LoginForm extends EntityModel{
     function __construct(){
       parent::__construct("");
    }  
+   public $fcm_token;
    public $username;
    public $password;
    

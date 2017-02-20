@@ -13,6 +13,7 @@
  *
  * @author exain
  */
+
 class Api extends Api_Controller {
     
     function getabout(){
@@ -340,6 +341,34 @@ class Api extends Api_Controller {
         
         return $report->ExactQuery()->result();
     }
+    
+    function postbroadcast(){
+        $bcmodel = new BroadcastSendModel();
+        
+        $m_user = new m_user();
+        $m_user->id = $bcmodel->uid;
+        
+        $m_user->Parse(singlerow($m_user->ExactQuery()));
+        
+        
+        $this->ParsePostData($bcmodel);
+        
+        $this->load->library("firebase");
+        
+        $fcm = new Firebase();
+        $fcm->SetKey(FIREBASECRED::$API_KEY);
+        
+        $fcm->AddData("n_title", "Broadcast Notification");
+        $fcm->AddData("n_message", "There is an incoming Emergency Broadcast!");
+        $fcm->AddData("bc_sender", $m_user->username);
+        $fcm->AddData("bc_msg", $bcmodel->message);
+        $fcm->AddRecipients($fcm->GetRecipients());
+        
+        
+        $result = $fcm->Send();
+        
+        
+    }
 }
 class ScheduleRequestModel extends EntityModel{
     function __construct() {
@@ -347,4 +376,12 @@ class ScheduleRequestModel extends EntityModel{
     }
 
     public $identifier;
+}
+class BroadcastSendModel extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+    public $uid;
+    public $time;
+    public $message;
 }
