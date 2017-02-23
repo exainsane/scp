@@ -18,6 +18,7 @@ define("USERDB_CLASSNAME","m_user");
 class Authenticator {  
     public static $ERRORCODE_UNAUTHORIZED = 0;
     public static $ERRORCODE_LOWER_ACCESS_LEVEL = 1;
+    public static $ERRORCODE_TOKEN_NOT_FOUND = 2;
     public $last_error = "";   
     public $token = "";
     private static $instance = null;
@@ -41,10 +42,12 @@ class Authenticator {
      * Use this for token
      * 
      */
-    public function VerifyToken($token){
+    public function VerifyToken($tokenstr){
         $token = new m_token();
         
-        $token->token = $token;
+        if($tokenstr == null) return false;
+        
+        $token->token = $tokenstr;
         
         $data = $token->ExactQuery();
         
@@ -53,7 +56,7 @@ class Authenticator {
             return false;
         }
         else{
-            $token->Parse(singlerow($data->result()));
+            $token->Parse(singlerow($data));
             $user = new m_user();
             $user->id = $token->id_user;
             
@@ -65,7 +68,7 @@ class Authenticator {
                 return false;
             }
             
-            $user->Parse(singlerow($data->result()));
+            $user->Parse(singlerow($data));
             
             $this->SaveCredentialInfo($user);
             return true;
@@ -215,22 +218,22 @@ class Authenticator {
         return true;
     }
     public function IsLoggedIn(){
-        
-        return get_instance()->session->userdata(SESSIONKEY."loggeduserid") != null;
+        $a = get_instance()->session->userdata(SESSIONKEY."loggeduserid") != null;   
+        return $a;
     }
     public function VerifyLevel($level){
-        $user = $this->CurrentUser();
+        $user = $this->CurrentUser();        
         return $user->user_level >= $level;
     }
-    private function SaveCredentialInfo($obj){
+    private function SaveCredentialInfo(m_user &$obj){
         $ci =& get_instance();
         
         $ci->session->set_userdata(SESSIONKEY."loggeduserid", $obj->id);
         
-        $obj->password = null;
-        $obj->last_active = "CURRENT_TIMESTAMP";
-        
-        $obj->Update();
+        $m = new m_user();
+        $m->id = $obj->id;
+        $m->_enable = 1;
+        $m->Update();               
     }
     private function GenerateToken($length){        
         $key = array(

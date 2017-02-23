@@ -4,7 +4,7 @@ interface IAuthenticator{
     
     function SetAuthOptions();
     function GetAuthOptions();
-    function OnFailedAuthentication();
+    function OnFailedAuthentication($code);
     function OnAfterAuthentication();
 }
 interface IUsePasswordField{
@@ -86,9 +86,11 @@ class Ext_Controller extends CI_Controller{
     protected function RequireUserLevel($methodname,$level){
         $this->SetCredential($methodname, true, $level);
     }
-    protected function SetCredential($methodname,$requirelogin = true,$userlevel = 1){
+    protected function SetCredential($methodname,$requirelogin = true,$userlevel = null){
         $this->cred[$methodname]['authenticate'] = $requirelogin;
-        $this->cred[$methodname]['level'] = $userlevel;
+        if($userlevel != null){
+            $this->cred[$methodname]['level'] = $userlevel;
+        }
     }
 }
 class Api_Controller extends Ext_Controller{
@@ -358,10 +360,14 @@ abstract class EntityModel{
         $this->_attrib['model_crud'] = true;
     }
     protected function SetModelCRU(){
-        $this->_attrib['model_crud'] = false;
+        if(isset($this->_attrib['model_crud']))
+            unset ($this->_attrib['model_crud']);
     }
     protected function IsModelCRUD(){
-        return !isset($this->_attrib['model_crud']) && $this->_attrib['model_crud'] = true;
+        if(isset($this->_attrib['model_crud'])){
+            return true;
+        }        
+        return false;        
     }
     public function GetIDField(){
         return $this->_attrib['key'];
@@ -545,18 +551,18 @@ abstract class EntityModel{
             
             $attrs[$idfield] = $this->GetID();
                         
-        }
-        if($this->IsModelCRUD() == false){
+        }           
+        if($this->IsModelCRUD() == false){            
             $ci->db->where("_enable",1);
         }
-        foreach ($attrs as $key => $value) {              
+        foreach ($attrs as $key => $value) {    
             if($value == null) continue;
             $ci->db->where($key, $value);
         }        
         if($beforeExecute != null){
             $beforeExecute($ci);            
         }
-        $s = $ci->db->get_compiled_select();    
+        $s = $ci->db->get_compiled_select();
         
         return $ci->db->query($s);
                
@@ -670,7 +676,6 @@ abstract class EntityModel{
     function __construct($tablename,$keyid = "id"){
         $this->_attrib['table'] = $tablename;
         $this->_attrib['key'] = $keyid;
-        $this->_attrib['model_crud'] = false;
     }
     function GetTableName(){
         return $this->_attrib['table'];

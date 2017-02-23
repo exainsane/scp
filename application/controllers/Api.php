@@ -14,18 +14,35 @@
  * @author exain
  */
 
-class Api extends Api_Controller {
-    
+class Api extends Api_Controller implements IAuthenticator{
+    public function OnAfterAuthentication() {
+        
+    }
+
+    public function OnFailedAuthentication($code) {
+        exit(json_encode( array("NG")));
+    }
+
+    public function SetAuthOptions() {
+        $this->RequireLogin("gettest");
+    }
+    function gettest(){
+        return array("ok");
+    }
     function getabout(){
         $abtq = new ModelUIAbout();
        
         return $abtq->ExactQuery()->result();
     }
     function postcheckout(){
-        $event = new t_checkout();
+        $checkout = new t_checkout();
         
-        $this->ParsePostData($event);
-        if($event->Insert() >= 1){
+        $this->ParsePostData($checkout);
+        
+        $checkout->schedule_time = date("Y-m-d H:i:s", $checkout->schedule_time);
+        $checkout->checkout_time = date("Y-m-d H:i:s", $checkout->checkout_time);
+        
+        if($checkout->Insert() >= 1){
             return $this->Success("Sync Success");
         }
         
@@ -35,22 +52,14 @@ class Api extends Api_Controller {
         $event = new t_event_report();
         
         $this->ParsePostData($event);
+        
+        $event->time = date("Y-m-d H:i:s", $event->time);
+        
         if($event->Insert() >= 1){
             return $this->Success("Sync Success");
         }
         
         return $this->Fail();
-    }
-    function getslider(){
-        $sliders = new ModelUISlider();                
-        
-        $sliders->des = "belajar";
-        $val = $sliders->Search()->result();
-        
-       
-        //$val = $sliders->Search()->result();
-        
-        var_dump($val);
     }
     function postcompany(){
         $user = new m_company();
@@ -344,20 +353,27 @@ class Api extends Api_Controller {
     
     function postbroadcast(){
         $bcmodel = new BroadcastSendModel();
+        $this->ParsePostData($bcmodel);
         
         $m_user = new m_user();
         $m_user->id = $bcmodel->uid;
         
         $m_user->Parse(singlerow($m_user->ExactQuery()));
         
+        $t_bc = new t_message_broadcast();
+        $t_bc->message = $bcmodel->message;
+        $t_bc->time = date("Y-m-d H:i:s",$bcmodel->time);
+        $t_bc->user_id = $m_user->id;
         
-        $this->ParsePostData($bcmodel);
+        $t_bc->Insert();
+        
         
         $this->load->library("firebase");
         
         $fcm = new Firebase();
         $fcm->SetKey(FIREBASECRED::$API_KEY);
         
+        $fcm->AddData("msg_type", FIREBASECRED::$MSG_TYPE_BROADCAST);
         $fcm->AddData("n_title", "Broadcast Notification");
         $fcm->AddData("n_message", "There is an incoming Emergency Broadcast!");
         $fcm->AddData("bc_sender", $m_user->username);
@@ -369,19 +385,4 @@ class Api extends Api_Controller {
         
         
     }
-}
-class ScheduleRequestModel extends EntityModel{
-    function __construct() {
-        parent::__construct("");
-    }
-
-    public $identifier;
-}
-class BroadcastSendModel extends EntityModel{
-    function __construct() {
-        parent::__construct("");
-    }
-    public $uid;
-    public $time;
-    public $message;
 }

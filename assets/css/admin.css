@@ -14,3 +14,7 @@ td .imgintable{
 	width: auto;
 	height: 200px;
 }
+.scrollable{
+	overflow-x:hidden;
+	overflow-y:auto;
+}

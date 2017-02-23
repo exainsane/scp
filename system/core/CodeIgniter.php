@@ -516,10 +516,11 @@ if ( ! is_php('5.4'))
             $credinfo = $CI->GetAuthOptions();                        
             
             if(isset($credinfo[$method])){
+                
                 if($CI instanceof Api_Controller){
                     $headers = apache_request_headers();
 
-                    $autoken = isset($headers['Authorization'])? null : $headers['Authorization'];
+                    $autoken = isset($headers['Authorization'])?$headers['Authorization']: null;
 
                     if($autoken == null){
                         $CI->OnFailedAuthentication(Authenticator::$ERRORCODE_TOKEN_NOT_FOUND);
@@ -527,7 +528,7 @@ if ( ! is_php('5.4'))
                     }
 
                     $validate = $authengine->VerifyToken($autoken);
-
+                   
                     if($credinfo[$method]['authenticate'] == true && !$validate){
                         $CI->OnFailedAuthentication(Authenticator::$ERRORCODE_UNAUTHORIZED);
                         exit;
@@ -540,13 +541,13 @@ if ( ! is_php('5.4'))
                         }
                     }
                 }else if($CI instanceof Ext_Controller){
-                        if($credinfo[$method]['authenticate'] == true && !$authengine->IsLoggedIn()){
-                            $CI->OnFailedAuthentication(Authenticator::$ERRORCODE_UNAUTHORIZED);
+                        if($credinfo[$method]['authenticate'] == true && !$authengine->IsLoggedIn()){                        
+                            $CI->OnFailedAuthentication(Authenticator::$ERRORCODE_UNAUTHORIZED);                            
                             exit;
 
                         }
                         if($credinfo[$method]['authenticate'] == true && isset($credinfo[$method]['level'])){
-                            if($authengine->VerifyLevel($credinfo[$method]['level'])){
+                            if(!$authengine->VerifyLevel($credinfo[$method]['level'])){
                                 $CI->OnFailedAuthentication(Authenticator::$ERRORCODE_LOWER_ACCESS_LEVEL);
                                 exit;
                             }

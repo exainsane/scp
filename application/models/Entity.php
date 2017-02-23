@@ -185,6 +185,7 @@ class t_event_report extends EntityModel implements IFileUpload{
 class m_token extends EntityModel{ 
    function __construct(){
       parent::__construct("m_token");
+      $this->SetModelCRUD(true);
    }   
    public $id;
    public $id_user;
@@ -208,6 +209,23 @@ class t_point_key_request extends EntityModel{
    public $point_id;
    public $request_by;
    public $approved;
+}
+class t_message_broadcast extends EntityModel{ 
+   function __construct(){
+      parent::__construct("t_message_broadcast");
+   }   public $id;
+   public $user_id;
+   public $time;
+   public $message;
+}
+class BroadcastSendModel extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+    public $uid;
+    public $message;
+    public $time;
+
 }
 /*
  * POST/GET Models
@@ -237,4 +255,11 @@ class PointRequest extends EntityModel{
     
     public $pid;
     public $key;
+}
+class ScheduleRequestModel extends EntityModel{
+    function __construct() {
+        parent::__construct("");
+    }
+
+    public $identifier;
 }

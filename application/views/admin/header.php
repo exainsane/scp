@@ -40,14 +40,14 @@
     <link href="<?php echo base_url("assets/ui/build/css/custom.css") ?>" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo base_url("assets/css/admin.css") ?>">
   </head>
-
-  <body class="nav-md">
+  <?php $admininfo = Authenticator::GetContext()->CurrentUser() ?>
+  <?php $admintype = function($id){$r = "UNKNOWN"; $ovr = get_class_vars("USERLEVEL"); foreach($ovr as $k => $v){if($v == $id){return $k; } } return $r; }; ?> <body class="nav-md">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-pencil"></i> <span>Marva Security Checkpoint</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-pencil"></i> <span>Security Checkpoint</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -59,7 +59,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Admin</h2>
+                <h2><?php echo $admininfo->username ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -147,7 +147,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="<?php echo base_url("assets/images/user.png") ?>" alt="">Admin
+                    <img src="<?php echo base_url("assets/images/user.png") ?>" alt=""><?php echo $admininfo->username." : ".$admintype($admininfo->user_level) ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">

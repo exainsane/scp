@@ -42,8 +42,14 @@
                     <td><?php echo $data->shift ?></td>                    
                     <td><?php echo $filter($data->user_level) ?></td>                    
                     <td><?php
-                      if(strlen($data->device_key) != 0 && strlen($data->device_key) == 20){
+                      if(strlen($data->device_key) != 0){
                         echo $data->device_key;
+                        ?>
+                        <form action="<?php echo site_url("admin/removekey/device") ?>" method="POST">
+                          <input type="hidden" name="form-uid" value="<?php echo $data->id ?>">
+                          <button class="btn btn-danger">Remove Key</button>
+                        </form>
+                        <?php
                       }else{
                         ?>
                         <div class="dropdown">

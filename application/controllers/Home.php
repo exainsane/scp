@@ -50,7 +50,7 @@ class Home extends Ext_Controller implements IAuthenticator {
         $this->RequireLogin("index");
     }
 
-    public function OnFailedAuthentication() {
+    public function OnFailedAuthentication($code) {
         
     }
 
@@ -113,4 +113,37 @@ class Home extends Ext_Controller implements IAuthenticator {
             echo $boo;  
         };
     }
+    public function login(){
+        if ($this->session->flashdata("has_error") == true){
+            $this->SetUIData("has_error", true);
+            $this->SetUIData("errormsg", $this->session->flashdata("error_message"));
+        }
+        $this->LoadUI("admin/home");
+    }
+    public function executelogin(){
+        $login = new AdminLoginRequest();
+        
+        $this->ParsePostData($login);
+        
+        $auth = Authenticator::GetContext();
+        $auth instanceof Authenticator;
+        
+        $sta = $auth->Login($login->username, $login->password);
+        
+        if($sta == true){
+            redirect(site_url("admin"));
+        }else{
+            $this->session->set_flashdata("has_error", true);
+            $this->session->set_flashdata("error_message", $auth->last_error);
+            redirect(site_url("home/login"));
+        }
+    }
+}
+class AdminLoginRequest extends EntityModel{
+
+    function __construct() {
+        parent::__construct("");
+    }
+    public $username;
+    public $password;
 }

@@ -57,12 +57,14 @@ class Firebase {
         );
         $fields = array();
         $fields['data'] = $this->data;
-        
         if(count($this->recipients) > 1){
-            $fields['registration_ids'] = $recipients;
+            
+            $fields['registration_ids'] = $this->recipients;
         }elseif(count($this->recipients) == 1){
-            $fields['to'] = $recipients;
+            
+            $fields['to'] = $this->recipients[0];
         }else{
+            
             return null;
         }
         

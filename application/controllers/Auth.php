@@ -30,13 +30,17 @@ class Auth extends Api_Controller {
         
         $auth = Authenticator::GetContext();
         $checkaukey = function(&$ci){
-          $ci->db->where("length(device_key) = 20");
+          $ci->db->where("length(device_key) = 20 and user_level not 999");
         };
         $auth instanceof Authenticator;
         if ($auth->Login($data->username, $data->password)){
             
             if($data->fcm_token != null){
-                $user = $auth->CurrentUser();
+                $muser = $auth->CurrentUser();
+                
+                $user = new m_user();
+                
+                $user->id = $muser->id;                                
                 $user->fcm_token = $data->fcm_token;
                 $user->Update();
             }
@@ -46,7 +50,9 @@ class Auth extends Api_Controller {
             $return->token = $auth->token;
             $udt = TransformIntoStdClass($auth->CurrentUser());
             
-            
+            if($udt->user_level == USERLEVEL::$SUPERADMIN){
+                goto skipdevicecheck;
+            }
             
             $key = $udt->device_key;
             $this->db->where("device_key",$key)
@@ -55,6 +61,8 @@ class Auth extends Api_Controller {
             if($chk->num_rows() != 1){
                 return $this->Fail("Device key not found or no loger valid!");                
             }
+            
+            skipdevicecheck:
             
             $shift = new m_shift();
             $shift->id = $udt->shift;

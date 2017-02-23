@@ -40,6 +40,8 @@
     <!-- starrr -->
     <script src="<?php echo base_url("assets/ui/vendors/starrr/dist/starrr.js") ?>"></script>
     <!-- Datatables -->
+<script src="<?php echo base_url("assets/ui/vendors/Chart.js/dist/Chart.min.js") ?>"></script>
+
     <script src="<?php echo base_url("assets/ui/vendors/datatables.net/js/jquery.dataTables.min.js") ?>"></script>
     <script src="<?php echo base_url("assets/ui/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js") ?>"></script>
     <script src="<?php echo base_url("assets/ui/vendors/datatables.net-buttons/js/dataTables.buttons.min.js") ?>"></script>
@@ -58,5 +60,6 @@
     
     <script src="<?php echo base_url("assets/ui/build/js/custom.min.js") ?>"></script>
     <script src="<?php echo base_url("assets/js/app.js") ?>"></script>
+    <script src="<?php echo base_url("assets/js/admin.js") ?>"></script>
 </body>
 </html>

@@ -13,16 +13,113 @@
  *
  * @author exain
  */
-class Admin extends Ext_Controller {
+class Admin extends Ext_Controller implements IAuthenticator {
+    public function OnAfterAuthentication() {
+        
+    }
+
+    public function OnFailedAuthentication($code) {
+        $this->session->set_flashdata("has_error",true);
+        if($code == Authenticator::$ERRORCODE_UNAUTHORIZED)
+            $this->session->set_flashdata("error_message","Login Required");
+        elseif($code == Authenticator::$ERRORCODE_LOWER_ACCESS_LEVEL)
+            $this->session->set_flashdata("error_message","Need higher Access Level to acces the page");
+        redirect(site_url("home/login"));
+    }
+
+    public function SetAuthOptions() {
+        $this->RequireLogin("index");
+        $this->RequireUserLevel("device_keys", USERLEVEL::$SUPERADMIN);
+        $this->RequireUserLevel("point_keys", USERLEVEL::$SUPERADMIN);
+        
+        $this->RequireUserLevel("points", USERLEVEL::$OPERATOR);
+        $this->RequireUserLevel("schedules", USERLEVEL::$OPERATOR);
+        $this->RequireUserLevel("shifts", USERLEVEL::$OPERATOR);
+    }
+
     function __construct() {
         parent::__construct();
         
         $this->SetHeaderAndFooter("admin/header", "admin/footer");
     }
     function index(){
+        $this->dashboard();
+    }
+    private function GetUserAccuracy(){
+        /*
+         * select *, delta/60  as minutes, delta - ((delta/60) * 60) as seconds, 
+            case when delta < 0 then delta * -1 else delta end as deltatozero from 
+            (
+                SELECT *, unix_timestamp(checkout_time) as chk, unix_timestamp(schedule_time) as sch, 
+                    (unix_timestamp(checkout_time) - unix_timestamp(schedule_time)) as delta FROM `t_checkout`
+            ) as a
+            order by case when delta < 0 then delta * -1 else delta end asc
+         */
+    }
+    private function GetUserAccomplishment(){
+        /*
+         * SELECT a.id, username, b.schedule_base, b.after, scheduled, min(date_add(scheduled, INTERVAL -2 HOUR)) as lowest, count(b.id) as point_no FROM `m_user` a 
+            left join 
+            (
+                SELECT 
+                        a.*,
+                        ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ) as datebase,
+                        DATE_ADD(ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ), INTERVAL a.after MINUTE) as scheduled
+                        FROM `m_schedule` a 
+
+                        left join (select schedule_base as base, shift_id  from m_schedule where schedule_base != '-') as b
+                        on a.shift_id = b.shift_id
+            ) as b on a.shift = b.shift_id
+            where a.user_level = 8
+            group by a.id
+         */
+        $q = $this->db->query("SELECT a.id, username, firstname, lastname, b.schedule_base, b.after, scheduled, min(date_add(scheduled, INTERVAL -2 HOUR)) as lowest, count(b.id) as point_no FROM `m_user` a 
+                        left join 
+                        (
+                            SELECT 
+                                    a.*,
+                                    ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ) as datebase,
+                                    DATE_ADD(ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ), INTERVAL a.after MINUTE) as scheduled
+                                    FROM `m_schedule` a 
+
+                                    left join (select schedule_base as base, shift_id  from m_schedule where schedule_base != '-') as b
+                                    on a.shift_id = b.shift_id
+                        ) as b on a.shift = b.shift_id
+                        where a.user_level = 8
+                        group by a.id")->result();
+        foreach($q as &$row){
+            $sel = $this->db->where("checkout_time", "  >= ".$row->scheduled)
+                    ->get("t_checkout")->num_rows();
+            
+            $row->checkouts = $sel;
+        }
+        
+        return $q;
+    }
+    private function dashboard(){
+        /*
+         * 
+         * SELECT 'event' as type,a.id, time, title, description, b.username FROM `t_event_report` a 
+            left join m_user b on a.user_id = b.id
+            union
+            select 'alert' as type,a.id, time, message, '', b.username from t_message_broadcast a
+            left join m_user b on a.user_id = b.id
+
+            order by time desc limit 0,10
+         */
+        $recents = $this->db
+                ->query("SELECT 'event' as type,a.id, time, title, description, b.username FROM `t_event_report` a 
+                        left join m_user b on a.user_id = b.id
+                        union
+                        select 'alert' as type,a.id, time, message, '', b.username from t_message_broadcast a
+                        left join m_user b on a.user_id = b.id
+
+                        order by time desc limit 0,10")
+                ->result();
+        $this->SetUIData("recents", $recents);        
+        $this->SetUIData("accm",$this->GetUserAccomplishment());
         $this->LoadUI("admin/pages/default");
     }
-    
     function shifts($action = null, $id = null, $save = null){   
         $_naming = "shifts";
         if($action == null){
@@ -122,7 +219,8 @@ class Admin extends Ext_Controller {
         }
     }    
     private function points_home(){
-        $q = $this->db->get("m_point");
+        $p = new m_point();
+        $q = $p->ExactQuery();
         $check_req = function($pid){
             $req = new t_point_key_request();
             $req->point_id = $pid;
@@ -190,8 +288,28 @@ class Admin extends Ext_Controller {
                     ->Execute();
         }
     }    
+    
     private function schedules_home(){
-        $q = $this->db->get("m_schedule");
+        
+        /*
+         * SELECT 
+            a.*,
+            ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ) as datebase,
+            DATE_ADD(ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ), INTERVAL a.after MINUTE) as scheduled
+            FROM `m_schedule` a 
+
+            left join (select schedule_base as base, shift_id  from m_schedule where schedule_base != '-') as b
+            on a.shift_id = b.shift_id
+         */
+        $this->db
+                ->select("a.*,
+                        ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ) as datebase,
+                        DATE_ADD(ADDTIME( CONVERT( DATE( NOW( ) ) , DATETIME ) ,  b.base ), INTERVAL a.after MINUTE) as scheduled")
+                ->from("m_schedule a")
+                ->join("(select schedule_base as base, shift_id  from m_schedule where schedule_base != '-') as b","a.shift_id = b.shift_id","left")
+                ->where("a._enable = 1");
+        //$m = new m_schedule();
+        $q = $this->db->get();
         $this->SetUIData("rows",$q->result());
         $this->LoadUI("admin/pages/schedules");
     }
@@ -476,7 +594,7 @@ class Admin extends Ext_Controller {
         require APPPATH.'third_party/qr/qrlib.php';
         ob_start();
         
-        QRcode::png($pdata->point_key, false, "H", 10, 2);   
+        QRcode::png($pdata->point_code, false, "H", 10, 2, true);   
         $imgdata = ob_get_contents();
 
         ob_end_clean();
@@ -571,6 +689,17 @@ class Admin extends Ext_Controller {
             $user->Parse(singlerow($q));
             $user->device_key = $data->device_key;
             $user->Update();
+            
+            redirect(site_url("admin/users"));
+        }
+    }
+    function removekey($key){
+        if($key == "device"){
+            $uid = $this->input->post("form-uid");
+            
+            $this->db->set("device_key","")
+                    ->where("id",$uid)
+                    ->update("m_user");
             
             redirect(site_url("admin/users"));
         }
