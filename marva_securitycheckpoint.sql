@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2017 at 02:42 AM
+-- Generation Time: Feb 24, 2017 at 04:36 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -54,7 +54,48 @@ INSERT INTO `log` (`timestamp`, `msg`) VALUES
 ('2017-02-14 11:51:56', 'INSERT INTO `t_checkout` (`point_id`, `user_id`, `checkout_time`, `schedule_time`, `point_name`, `img`) VALUES (''1'', ''7'', ''1487072425970'', ''1487048415235'', ''Pos A1'', ''assets/images/uploads/148707311631jpg.jpg'')'),
 ('2017-02-14 11:52:25', 'INSERT INTO `t_checkout` (`point_id`, `user_id`, `checkout_time`, `schedule_time`, `point_name`, `img`) VALUES (''1'', ''7'', ''1487073139427'', ''1487048412597'', ''Pos A1'', ''assets/images/uploads/148707314587725jpg.jpg'')'),
 ('2017-02-14 13:18:42', 'INSERT INTO `t_event_report` (`user_id`, `point_name`, `description`, `img`) VALUES (''7'', ''hajaj'', ''detil'', ''assets/images/uploads/1487078322529853jpg.jpg'')'),
-('2017-02-14 13:20:07', 'INSERT INTO `t_event_report` (`user_id`, `title`, `point_name`, `description`) VALUES (''7'', ''ywihs72hz'', ''vshusb'', ''vshsu'')');
+('2017-02-14 13:20:07', 'INSERT INTO `t_event_report` (`user_id`, `title`, `point_name`, `description`) VALUES (''7'', ''ywihs72hz'', ''vshusb'', ''vshsu'')'),
+('2017-02-15 02:03:51', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''AEuQQZRv7heoHWEJuZJfMTz8rBL8NzotIN4PxKRt6oo6K'')'),
+('2017-02-15 02:04:43', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''EySeXHWmYO5DP8a36nv4QKWCIZRdLj6NBqWQkxjlwouKi'')'),
+('2017-02-15 02:05:38', 'INSERT INTO `t_checkout` (`point_id`, `user_id`, `checkout_time`, `schedule_time`, `point_name`, `img`) VALUES (''1'', ''7'', ''1487124329633'', ''1487134823920'', ''Pos A1'', ''assets/images/uploads/14871243386241jpg.jpg'')'),
+('2017-02-15 02:06:25', 'INSERT INTO `t_checkout` (`point_id`, `user_id`, `checkout_time`, `schedule_time`, `point_name`, `img`) VALUES (''2'', ''7'', ''1487124367482'', ''1487138400672'', ''Pos B1'', ''assets/images/uploads/148712438545269jpg.jpg'')'),
+('2017-02-20 13:47:07', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:47:44', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:48:58', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:49:22', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:49:35', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:49:59', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:50:09', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:50:37', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:50:46', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:52:22', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:53:08', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:56:15', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 13:59:40', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 14:02:38', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 14:03:13', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 14:05:40', 'INSERT INTO `t_message_broadcast` (`user_id`) VALUES (''9'')'),
+('2017-02-20 14:07:46', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:08:45', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:09:12', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:13:26', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:13:37', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:15:36', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:30:07', 'INSERT INTO `t_message_broadcast` (`user_id`, `time`, `message`) VALUES (''4'', ''2981329821'', ''testmsgawdawd'')'),
+('2017-02-20 14:42:03', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''XnSQY4CrK9IPSlwusQSp4p83Nf8ng3dQy3drfYuDr3SnJ'')'),
+('2017-02-22 07:29:36', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''L4gg1ujGTQLRRcRFTakqsNmYwJGGx4wovlAqRH7DBJOmb'')'),
+('2017-02-22 07:30:49', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''Oj3bO4VGXLbI7qpYztHGeTFzoanQVfrebBWVXduFEwbG6'')'),
+('2017-02-22 07:31:09', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''xzGBHNS4YqZLRyfBiNmTLeyuerxIaxwsw7g1NgWgWyiwq'')'),
+('2017-02-22 07:32:30', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''7'', ''VElowtrmKSAWkhhdussMVNBIT7HD6LcCKB3hzXKFMGhq6'')'),
+('2017-02-22 07:45:58', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''vTszD5hfdBCaOaSNyYS71NXAiNXcZJfncND8uIuUYIEGg'')'),
+('2017-02-22 07:46:17', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''wsVqkJB4RRcgmFECwusfAcyIf6r8I355KoVFyYYtO9FBN'')'),
+('2017-02-22 13:07:17', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''S4YOHxmRmDWGXzAg62C4RgT2RYKFbo3Uoe7gDHMFsxpBY'')'),
+('2017-02-22 13:08:41', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''qyQBMD9HkWUnvzotk7ilfEPPdMIhHCcwHKXUFgfjyJK2R'')'),
+('2017-02-22 13:09:22', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''hHVxuPl4sm8oLYCZwWFQkWCqfdiFTr46nTKCggIKDLNr8'')'),
+('2017-02-22 13:10:30', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''8laNzcRhNG3C3EFr2tcPWXAoytkc3QnQ9rcs45LBx7ynL'')'),
+('2017-02-23 06:53:41', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''8CGS2hS8CuSRuZ2AJ2aeXiDigZiIeSsYWaZ41xepwf214'')'),
+('2017-02-23 06:54:01', 'INSERT INTO `m_schedule` (`shift_id`, `point_id`, `schedule_base`, `after`) VALUES (''3'', ''5'', ''-'', ''100'')'),
+('2017-02-23 11:56:47', 'INSERT INTO `m_token` (`id_user`, `token`) VALUES (''9'', ''1PSICXIEiyKWCji6Isc3aIOh2iZLXU4X1NRPMFKSnKz3o'')');
 
 -- --------------------------------------------------------
 
@@ -138,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `m_point` (
 
 INSERT INTO `m_point` (`id`, `_enable`, `point_name`, `point_lat`, `point_long`, `point_key`, `point_code`, `company_id`) VALUES
 (1, 1, 'Pos A1', '0.0000', '0.0000', '12345678912345678911', 'POINT-r1FiarSTvua7dvY1ujhc4hyLaeLju', 0),
-(2, 1, 'Pos B1', '0.0000', '0.0000', '', '', 0),
+(2, 1, 'Pos B1', '0.0000', '0.0000', '', 'POINT-tvHtOyYFwzMzNn6KoknkthARNzctz', 0),
 (3, 1, 'Pos C1', '0.0000', '0.0000', '', '', 0),
 (4, 1, 'Pos D1', '0.0000', '0.0000', '', '', 0),
 (5, 1, 'Center', '0.0000', '0.0000', NULL, '', 0);
@@ -185,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
   PRIMARY KEY (`id`),
   KEY `shift_id` (`shift_id`),
   KEY `point_id` (`point_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `m_schedule`
@@ -199,7 +240,8 @@ INSERT INTO `m_schedule` (`id`, `_enable`, `shift_id`, `point_id`, `schedule_bas
 (11, 1, 2, 1, '18:00:00', 0),
 (12, 1, 2, 2, '-', 120),
 (13, 1, 2, 3, '-', 180),
-(14, 1, 2, 4, '-', 240);
+(14, 1, 2, 4, '-', 240),
+(15, 0, 3, 5, '-', 100);
 
 -- --------------------------------------------------------
 
@@ -244,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `m_token` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_user_2` (`id_user`),
   KEY `id_user` (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=124 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=139 ;
 
 --
 -- Dumping data for table `m_token`
@@ -253,7 +295,8 @@ CREATE TABLE IF NOT EXISTS `m_token` (
 INSERT INTO `m_token` (`id`, `id_user`, `token`) VALUES
 (106, 8, 'KT6hrcKp3TcDEgfURXfIKf42WO1jvUXw3eg8E1I8VWHWX'),
 (116, 4, 'hZnsJ1Fiy9EoOBcK76EPxRPAGB6uEyix2qKaUqllUhny5'),
-(123, 7, 'JGjrAfA6dUSnrCM1DSmfDCfKMluMUYI3o21K2sYDdJGTJ');
+(130, 7, 'VElowtrmKSAWkhhdussMVNBIT7HD6LcCKB3hzXKFMGhq6'),
+(138, 9, '1PSICXIEiyKWCji6Isc3aIOh2iZLXU4X1NRPMFKSnKz3o');
 
 -- --------------------------------------------------------
 
@@ -276,6 +319,7 @@ CREATE TABLE IF NOT EXISTS `m_user` (
   `user_level` smallint(2) NOT NULL,
   `device_key` varchar(255) NOT NULL,
   `company_id` bigint(255) NOT NULL,
+  `fcm_token` varchar(255) NOT NULL,
   `last_active` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
@@ -286,11 +330,11 @@ CREATE TABLE IF NOT EXISTS `m_user` (
 -- Dumping data for table `m_user`
 --
 
-INSERT INTO `m_user` (`id`, `_enable`, `user_activated`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`, `last_active`) VALUES
-(4, 1, 1, 'exainsane22', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07', '+6287870980562', 'rnugraha305@gmail.com', 1, 10, '', 0, '0000-00-00 00:00:00'),
-(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan Achadi', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 9, '12345678912345678911', 0, '0000-00-00 00:00:00'),
-(8, 1, 1, 'exairie', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07 No 56 Babakan Tarikolot, Cibinong', '087870980562', 'user@exainsane.com', 2, 0, '', 0, '2017-02-11 08:00:20'),
-(9, 1, 1, 'administrator', '0192023a7bbd73250516f069df18b500', 'Marva Cipta', 'Admin', '-', '-', 'admin@exairie.net', 3, 999, '', 0, '2017-02-11 09:34:53');
+INSERT INTO `m_user` (`id`, `_enable`, `user_activated`, `username`, `password`, `firstname`, `lastname`, `address`, `phone`, `email`, `shift`, `user_level`, `device_key`, `company_id`, `fcm_token`, `last_active`) VALUES
+(4, 1, 1, 'exainsane22', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07', '+6287870980562', 'rnugraha305@gmail.com', 1, 8, '', 0, '', '2017-02-23 15:45:47'),
+(7, 1, 1, 'exainsane', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan Achadi', 'Nugroho', 'Nanggewer RT 01 RW 07, Kp Tarikolot No 56', '87870980562', 'rnugraha305@gmail.com', 1, 8, '12345678912345678911', 0, 'ePcFrhI8wBg:APA91bFUCQlbMbgYMhXZ9Tqm-vaLm52ldvMn_o8OUTlRWjW-4Is0CKlkaS1u00cZ0PwepPUrJ7ny19PjzLdl7PJKYk-_9vtZI52mWLaAf-XbQOpdb98JWD75S7INj3AYvWbPkI1xzevt', '2017-02-23 15:45:44'),
+(8, 1, 1, 'exairie', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Ridwan', 'Nugroho', 'Nanggewer RT 01 RW 07 No 56 Babakan Tarikolot, Cibinong', '087870980562', 'user@exainsane.com', 2, 0, '', 0, '', '2017-02-11 08:00:20'),
+(9, 1, 1, 'administrator', 'd0e0dc6c50861bb6199eb3482c8e3a95', 'Marva Cipta', 'Admin', '-', '-', 'admin@exairie.net', 3, 999, '', 0, '', '2017-02-22 07:45:51');
 
 -- --------------------------------------------------------
 
@@ -325,15 +369,17 @@ CREATE TABLE IF NOT EXISTS `t_checkout` (
   PRIMARY KEY (`id`),
   KEY `point_id` (`point_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `t_checkout`
 --
 
 INSERT INTO `t_checkout` (`id`, `_enable`, `point_id`, `user_id`, `checkout_time`, `schedule_time`, `point_name`, `point_lat`, `point_long`, `img`) VALUES
-(2, 1, 1, 7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Pos A1', '0.0000', '0.0000', 'assets/images/uploads/148707311631jpg.jpg'),
-(3, 1, 1, 7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Pos A1', '0.0000', '0.0000', 'assets/images/uploads/148707314587725jpg.jpg');
+(2, 1, 1, 7, '2017-02-15 08:20:24', '2017-02-15 08:20:24', 'Pos A1', '0.0000', '0.0000', 'assets/images/uploads/148707311631jpg.jpg'),
+(3, 1, 1, 7, '2017-02-15 08:21:27', '2017-02-15 08:23:27', 'Pos A1', '0.0000', '0.0000', 'assets/images/uploads/148707314587725jpg.jpg'),
+(4, 1, 1, 7, '2017-02-15 12:31:34', '2017-02-15 12:36:34', 'Pos A1', '0.0000', '0.0000', 'assets/images/uploads/14871243386241jpg.jpg'),
+(5, 1, 2, 7, '2017-02-23 09:22:27', '2017-02-23 09:12:27', 'Pos B1', '0.0000', '0.0000', 'assets/images/uploads/148712438545269jpg.jpg');
 
 -- --------------------------------------------------------
 
@@ -377,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `t_event_report` (
   `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `t_event_report`
@@ -392,7 +438,35 @@ INSERT INTO `t_event_report` (`id`, `_enable`, `user_id`, `title`, `time`, `poin
 (11, 1, 7, '', '2017-02-14 18:16:52', '', '', '0.0000', '0.0000', 'assets/images/uploads/14870710126jpg.jpg'),
 (12, 1, 7, '', '2017-02-14 18:17:41', '', '', '0.0000', '0.0000', 'assets/images/uploads/14870710616jpg.jpg'),
 (13, 1, 7, '', '0000-00-00 00:00:00', 'hajaj', 'detil', '0.0000', '0.0000', 'assets/images/uploads/1487078322529853jpg.jpg'),
-(14, 1, 7, 'ywihs72hz', '0000-00-00 00:00:00', 'vshusb', 'vshsu', '0.0000', '0.0000', NULL);
+(14, 1, 7, 'ywihs72hz', '0000-00-00 00:00:00', 'vshusb', 'vshsu', '0.0000', '0.0000', NULL),
+(15, 1, 7, '', '0000-00-00 00:00:00', '', '', '0.0000', '0.0000', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_message_broadcast`
+--
+
+CREATE TABLE IF NOT EXISTS `t_message_broadcast` (
+  `id` bigint(255) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(255) NOT NULL,
+  `time` datetime NOT NULL,
+  `message` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+
+--
+-- Dumping data for table `t_message_broadcast`
+--
+
+INSERT INTO `t_message_broadcast` (`id`, `user_id`, `time`, `message`) VALUES
+(18, 4, '0000-00-00 00:00:00', '1d'),
+(19, 4, '0000-00-00 00:00:00', 'testmsgawdawdd'),
+(20, 4, '0000-00-00 00:00:00', 'testmsgawdawd123'),
+(21, 4, '0000-00-00 00:00:00', 'testmsgawdawdcaw'),
+(22, 4, '0000-00-00 00:00:00', 'testmsgawdawd2'),
+(23, 4, '0000-00-00 00:00:00', 'testmsgawdawd123');
 
 -- --------------------------------------------------------
 
@@ -468,6 +542,12 @@ ALTER TABLE `t_checkout`
 --
 ALTER TABLE `t_event_report`
   ADD CONSTRAINT `t_event_report_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `m_user` (`id`);
+
+--
+-- Constraints for table `t_message_broadcast`
+--
+ALTER TABLE `t_message_broadcast`
+  ADD CONSTRAINT `t_message_broadcast_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `m_user` (`id`);
 
 --
 -- Constraints for table `t_point_key_request`
